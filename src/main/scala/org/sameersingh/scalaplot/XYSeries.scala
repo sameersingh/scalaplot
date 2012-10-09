@@ -17,6 +17,7 @@ class XYSeries {
   var pointColor: Option[String] = None
   var dataFilename: String = ""
   var every: Option[Int] = None
+  var errCols: Option[Seq[Int]] = None
 
   def gnuplotDescription(): String = {
     "plot '%s' using %d:%d title %s with linepoints" format(dataFilename, xCol, yCol, seriesName)
