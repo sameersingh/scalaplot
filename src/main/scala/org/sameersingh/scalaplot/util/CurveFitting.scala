@@ -1,6 +1,6 @@
-package sameersingh.scalaplot.util
+package org.sameersingh.scalaplot.util
 
-import sameersingh.scalaplot.Chart
+import org.sameersingh.scalaplot.Chart
 
 /**
  * @author sameer

@@ -1,4 +1,4 @@
-package sameersingh.scalaplot
+package org.sameersingh.scalaplot
 
 import org.junit._
 

@@ -1,4 +1,4 @@
-package sameersingh.scalaplot.util
+package org.sameersingh.scalaplot.util
 
 
 /**

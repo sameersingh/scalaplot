@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>sameersingh.scalaplot</groupId>
+  <groupId>org.sameersingh.scalaplot</groupId>
   <artifactId>scalaplot</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>${project.artifactId}</name>
@@ -65,6 +65,24 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>ieslnexus</id>
+      <name>IESL Nexus repostory</name>
+      <url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>ieslnexus</id>
+      <name>IESL Nexus repostory</name>
+      <url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <site>
+      <id>ieslwww</id>
+      <name>IESL www repository</name>
+      <url>scp://iesl.cs.umass.edu/m/iesl/data2/www/iesl/maven/factorie</url>
+    </site>
+  </distributionManagement>
 
   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>
