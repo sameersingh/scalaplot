@@ -89,9 +89,14 @@
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
       <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
-        <version>2.15.0</version>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <recompileMode>incremental</recompileMode>
+          <useZincServer>true</useZincServer>
+          <scalaVersion>${scala.version}</scalaVersion>
+        </configuration>
         <executions>
           <execution>
             <goals>
