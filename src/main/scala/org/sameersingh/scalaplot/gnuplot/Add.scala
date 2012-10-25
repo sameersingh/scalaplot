@@ -1,5 +1,4 @@
-package org.sameersingh.scalaplot.util
-
+package org.sameersingh.scalaplot.gnuplot
 
 /**
  * @author sameer
@@ -17,6 +16,8 @@ object Add {
   val Phi = "{/Symbol F}"
   val gamma = "{/Symbol g}"
   val Gamma = "{/Symbol G}"
+  val lambda = "{/Symbol l}"
+  val Lambda = "{/Symbol L}"
   val pi = "{/Symbol p}"
   val Pi = "{/Symbol P}"
   val theta = "{/Symbol q}"

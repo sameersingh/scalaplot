@@ -15,14 +15,4 @@ abstract class Chart {
   // TODO
   var legendPos: Option[Int] = None
   var showLegend: Boolean = false
-
-  def gnuplotDescription(): Buffer[String] = {
-    val lines = new ArrayBuffer[String]
-    lines += "# Chart settings"
-    title.foreach(t => lines += "set title %s" format (t))
-    outputType.foreach(t => lines += "set terminal %s" format (t))
-    outputFilename.foreach(t => lines += "set output %s" format (t))
-    pointSize.foreach(t => lines += "set pointSize %f" format (t))
-    lines
-  }
 }
