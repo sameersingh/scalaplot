@@ -9,15 +9,15 @@ import collection.mutable.{ArrayBuffer, Buffer}
 abstract class Chart {
   def title: Option[String] = None
 
-  def pointSize: Option[Double] = None
+  var pointSize: Option[Double] = None
 
-  def legendPosX: LegendPosX.Type = LegendPosX.Right
+  var legendPosX: LegendPosX.Type = LegendPosX.Right
 
-  def legendPosY: LegendPosY.Type = LegendPosY.Center
+  var legendPosY: LegendPosY.Type = LegendPosY.Center
 
-  def showLegend: Boolean = false
+  var showLegend: Boolean = false
 
-  def monochrome: Boolean = false
+  var monochrome: Boolean = false
 }
 
 object LegendPosX extends Enumeration {

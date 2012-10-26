@@ -6,7 +6,7 @@ import collection.mutable.ArrayBuffer
  * @author sameer
  * @date 10/9/12
  */
-class XYData(val xlabel: String, val ylabel: String, ss: Seq[XYSeries]) {
+class XYData(val xlabel: String, val ylabel: String, ss: Seq[XYSeries] = Seq.empty) {
   def this(ss: XYSeries*) = this("x", "y", ss)
 
   val _serieses = new ArrayBuffer[XYSeries]()

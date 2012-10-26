@@ -51,6 +51,9 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     }
   }
 
+  protected def getLineStyle(s: XYSeries): String =
+    getLineStyle(s.plotStyle, s.color, s.pointSize, s.pointType, s.lineWidth, s.lineType)
+
   protected def getLineStyle(plotStyle: XYPlotStyle.Type,
                              col: Option[Color.Type],
                              pointSize: Option[Double],
@@ -59,13 +62,13 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
                              lineType: Option[LineType.Type]): String = {
     val sb = new StringBuffer()
     sb append "with "
-    sb append plotStyle match {
+    sb append (plotStyle match {
       case XYPlotStyle.Lines => "lines"
       case XYPlotStyle.LinesPoints => "linespoints"
       case XYPlotStyle.Points => "points"
       case XYPlotStyle.Dots => "dots"
       case XYPlotStyle.Impulses => "impulses"
-    }
+    })
     if (col.isDefined)
       sb.append(" linecolor rgbcolor \"%s\"" format (getColorname(col.get)))
     if (pointSize.isDefined)
@@ -109,10 +112,17 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     lines += "# XYData Plotting"
     lines += "set xlabel \"%s\"" format (data.xlabel)
     lines += "set ylabel \"%s\"" format (data.ylabel)
+    lines += "plot \\"
     for (series: XYSeries <- data.serieses) {
       isFirst = (series == data.serieses.head)
       isLast = (series == data.serieses.last)
       plotXYSeries(series)
+    }
+    // store the data if required
+    for (series: XYSeries <- data.serieses) {
+      isFirst = (series == data.serieses.head)
+      isLast = (series == data.serieses.last)
+      postPlotXYSeries(series)
     }
     lines += ""
   }
@@ -124,27 +134,37 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     }
   }
 
+  def postPlotXYSeries(series: XYSeries) {
+    series match {
+      case m: MemXYSeries => postPlotMemXYSeries(m)
+      case f: FileXYSeries => postPlotFileXYSeries(f)
+    }
+  }
+
   def plotMemXYSeries(series: MemXYSeries) {
-    var prefix = if (isFirst) "plot" else "replot"
-    lines += "# %s" format (series.seriesName)
+    var suffix = if (isLast) "" else ", \\"
     var filename = if (series.isLarge) outputFilename + "-" + series.seriesName + ".dat" else "-"
-    lines += "%s '%s' using %d:%d title \"%s\" with line" format(prefix, filename, 1, 2, series.seriesName)
+    lines += "'%s' using %d:%d title \"%s\" %s %s" format(filename, 1, 2, series.seriesName, getLineStyle(series), suffix)
+  }
+
+  def plotFileXYSeries(series: FileXYSeries) {
+    var suffix = if (isLast) "" else ", \\"
+    lines += "'%s' using %d:%d title \"%s\" %s %s" format(series.dataFilename, series.xcol, series.ycol, series.seriesName, getLineStyle(series), suffix)
+  }
+
+  def postPlotMemXYSeries(series: MemXYSeries) {
     if (series.isLarge) {
       // write to file, then refer to it in the script
-      filename = outputFilename + "-" + series.seriesName + ".dat"
-      series.writeToFile(filename)
+      series.writeToFile(outputFilename + "-" + series.seriesName + ".dat")
     } else {
       // write directly to the lines
+      lines += "# %s" format (series.seriesName)
       lines ++= series.toStrings()
       lines += "end"
     }
   }
 
-  def plotFileXYSeries(series: FileXYSeries) {
-    var prefix = if (isFirst) "plot" else "replot"
-    lines += "# %s" format (series.seriesName)
-    lines += "%s '%s' using %d:%d title \"%s\" with line" format(prefix, series.dataFilename, series.xcol, series.ycol, series.seriesName)
-  }
+  def postPlotFileXYSeries(series: FileXYSeries) {  }
 
   def writeToPdf(filenamePrefix: String) {
     // write the description
