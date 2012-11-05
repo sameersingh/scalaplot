@@ -164,7 +164,7 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     }
   }
 
-  def postPlotFileXYSeries(series: FileXYSeries) {  }
+  def postPlotFileXYSeries(series: FileXYSeries) {}
 
   def writeToPdf(filenamePrefix: String) {
     // write the description
@@ -187,4 +187,8 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     }
     writer.close()
   }
+}
+
+object GnuplotPlotter {
+  def pdf(chart: Chart, filePrefix: String): Unit = new GnuplotPlotter(chart).writeToPdf(filePrefix)
 }
