@@ -18,6 +18,8 @@ abstract class Chart {
   var showLegend: Boolean = false
 
   var monochrome: Boolean = false
+
+  var size: Option[(Double, Double)] = None
 }
 
 object LegendPosX extends Enumeration {

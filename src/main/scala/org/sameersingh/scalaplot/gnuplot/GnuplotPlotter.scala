@@ -177,7 +177,8 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     }
     lines += "# Wrapup"
     var monochromeString = if (chart.monochrome) "monochrome" else ""
-    lines += "set terminal pdf enhanced linewidth 1.0 %s" format (monochromeString)
+    var sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
+    lines += "set terminal pdf enhanced linewidth 3.0 %s %s" format(monochromeString, sizeString)
     lines += "set output \"%s\"" format (outputFilename)
     lines += "refresh"
     lines += "unset output"
