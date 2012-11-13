@@ -18,6 +18,8 @@ abstract class XYSeries {
   // line config
   var lineWidth: Option[Double] = None
   var lineType: Option[LineType.Type] = None
+  // how many points to skip between plots
+  var every: Option[Int] = None
 }
 
 class FileXYSeries(val xcol: Int, val ycol: Int, val seriesName: String, val dataFilename: String) extends XYSeries {
@@ -32,12 +34,12 @@ class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val seriesName: Stri
   def writeToFile(filename: String) {
     val writer = new PrintWriter(filename)
     for (i <- 0 until xs.length)
-      writer.println("%f\t%f" format(xs(i), ys(i)))
+      writer.println(xs(i).toString + "\t" + ys(i).toString)
     writer.flush()
     writer.close()
   }
 
-  def toStrings(): Seq[String] = (0 until xs.length).map(i => "%f\t%f" format(xs(i), ys(i)))
+  def toStrings(): Seq[String] = (0 until xs.length).map(i => xs(i).toString + "\t" + ys(i).toString)
 }
 
 object XYPlotStyle extends Enumeration {

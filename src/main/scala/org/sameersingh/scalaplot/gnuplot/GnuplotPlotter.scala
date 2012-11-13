@@ -144,12 +144,14 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
   def plotMemXYSeries(series: MemXYSeries) {
     var suffix = if (isLast) "" else ", \\"
     var filename = if (series.isLarge) outputFilename + "-" + series.seriesName + ".dat" else "-"
-    lines += "'%s' using %d:%d title \"%s\" %s %s" format(filename, 1, 2, series.seriesName, getLineStyle(series), suffix)
+    var everyString = if(!series.every.isDefined) "" else "every %d" format(series.every.get)
+    lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(filename, everyString, 1, 2, series.seriesName, getLineStyle(series), suffix)
   }
 
   def plotFileXYSeries(series: FileXYSeries) {
     var suffix = if (isLast) "" else ", \\"
-    lines += "'%s' using %d:%d title \"%s\" %s %s" format(series.dataFilename, series.xcol, series.ycol, series.seriesName, getLineStyle(series), suffix)
+    var everyString = if(!series.every.isDefined) "" else "every %d" format(series.every.get)
+    lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(series.dataFilename, everyString, series.xcol, series.ycol, series.seriesName, getLineStyle(series), suffix)
   }
 
   def postPlotMemXYSeries(series: MemXYSeries) {
