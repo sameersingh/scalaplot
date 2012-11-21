@@ -2,7 +2,7 @@ package org.sameersingh.scalaplot.gnuplot
 
 import org.sameersingh.scalaplot._
 import collection.mutable.ArrayBuffer
-import java.io.PrintWriter
+import java.io.{File, PrintWriter}
 
 /**
  * @author sameer
@@ -11,7 +11,8 @@ import java.io.PrintWriter
 class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 
   var lines = new ArrayBuffer[String]
-  var outputFilename: String = ""
+  var directory: String = ""
+  var filename: String = ""
   var isFirst = false
   var isLast = false
 
@@ -95,23 +96,23 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 
   def plotXYChart(chart: XYChart) {
     lines += "# XYChart settings"
-    if (chart.logX && chart.logY) lines += "set logscale"
-    else if (chart.logX) lines += "set logscale x"
-    else if (chart.logY) lines += "set logscale y"
+    if (chart.isLogX && chart.isLogY) lines += "set logscale"
+    else if (chart.isLogX) lines += "set logscale x"
+    else if (chart.isLogY) lines += "set logscale y"
     else lines += "set nologscale"
-    var xr1s = if (chart.xrange._1.isDefined) chart.xrange._1.get.toString else "*"
-    var xr2s = if (chart.xrange._2.isDefined) chart.xrange._2.get.toString else "*"
-    var yr1s = if (chart.yrange._1.isDefined) chart.yrange._1.get.toString else "*"
-    var yr2s = if (chart.yrange._2.isDefined) chart.yrange._2.get.toString else "*"
-    lines += "set xr [%s:%s] %sreverse" format(xr1s, xr2s, if (chart.reverseX) "" else "no")
-    lines += "set yr [%s:%s] %sreverse" format(yr1s, yr2s, if (chart.reverseY) "" else "no")
+    var xr1s = if (chart.minX.isDefined) chart.minX.get.toString else "*"
+    var xr2s = if (chart.maxX.isDefined) chart.maxX.get.toString else "*"
+    var yr1s = if (chart.minY.isDefined) chart.minY.get.toString else "*"
+    var yr2s = if (chart.maxY.isDefined) chart.maxY.get.toString else "*"
+    lines += "set xr [%s:%s] %sreverse" format(xr1s, xr2s, if (chart.isBackwardX) "" else "no")
+    lines += "set yr [%s:%s] %sreverse" format(yr1s, yr2s, if (chart.isBackwardY) "" else "no")
+    lines += "set xlabel \"%s\"" format (chart.xlabel)
+    lines += "set ylabel \"%s\"" format (chart.ylabel)
     plotXYData(chart.data)
   }
 
   def plotXYData(data: XYData) {
     lines += "# XYData Plotting"
-    lines += "set xlabel \"%s\"" format (data.xlabel)
-    lines += "set ylabel \"%s\"" format (data.ylabel)
     lines += "plot \\"
     for (series: XYSeries <- data.serieses) {
       isFirst = (series == data.serieses.head)
@@ -143,36 +144,46 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 
   def plotMemXYSeries(series: MemXYSeries) {
     var suffix = if (isLast) "" else ", \\"
-    var filename = if (series.isLarge) outputFilename + "-" + series.seriesName + ".dat" else "-"
-    var everyString = if(!series.every.isDefined) "" else "every %d" format(series.every.get)
-    lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(filename, everyString, 1, 2, series.seriesName, getLineStyle(series), suffix)
+    var dataFilename = if (series.isLarge) filename + "-" + series.name + ".dat" else "-"
+    var everyString = if (!series.every.isDefined) "" else "every %d" format (series.every.get)
+    lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(dataFilename, everyString, 1, 2, series.name, getLineStyle(series), suffix)
   }
 
   def plotFileXYSeries(series: FileXYSeries) {
     var suffix = if (isLast) "" else ", \\"
-    var everyString = if(!series.every.isDefined) "" else "every %d" format(series.every.get)
-    lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(series.dataFilename, everyString, series.xcol, series.ycol, series.seriesName, getLineStyle(series), suffix)
+    var everyString = if (!series.every.isDefined) "" else "every %d" format (series.every.get)
+    lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(series.dataFilename, everyString, series.xcol, series.ycol, series.name, getLineStyle(series), suffix)
   }
 
   def postPlotMemXYSeries(series: MemXYSeries) {
     if (series.isLarge) {
       // write to file, then refer to it in the script
-      series.writeToFile(outputFilename + "-" + series.seriesName + ".dat")
+      series.writeToFile(directory + filename + "-" + series.name + ".dat")
     } else {
       // write directly to the lines
-      lines += "# %s" format (series.seriesName)
+      lines += "# %s" format (series.name)
       lines ++= series.toStrings()
       lines += "end"
     }
   }
 
+  def reset = {
+    lines.clear
+    directory = ""
+    filename = ""
+    isFirst = false
+    isLast = false
+  }
+
   def postPlotFileXYSeries(series: FileXYSeries) {}
 
-  def writeToPdf(filenamePrefix: String) {
+  def writeToPdf(directory: String, filenamePrefix: String) {
     // write the description
-    val scriptFile = filenamePrefix + ".gpl"
-    outputFilename = filenamePrefix + ".pdf"
-    lines.clear()
+    assert(new File(directory).isDirectory)
+    assert(directory.endsWith("/"))
+    reset
+    this.directory = directory
+    filename = filenamePrefix
     plotChart(chart)
     chart match {
       case xyc: XYChart => plotXYChart(xyc)
@@ -181,9 +192,10 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     var monochromeString = if (chart.monochrome) "monochrome" else ""
     var sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
     lines += "set terminal pdf enhanced linewidth 3.0 %s %s" format(monochromeString, sizeString)
-    lines += "set output \"%s\"" format (outputFilename)
+    lines += "set output \"%s\"" format (filename + ".pdf")
     lines += "refresh"
     lines += "unset output"
+    val scriptFile = directory + filenamePrefix + ".gpl"
     val writer = new PrintWriter(scriptFile)
     for (line <- lines) {
       writer.println(line)
@@ -193,5 +205,5 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 }
 
 object GnuplotPlotter {
-  def pdf(chart: Chart, filePrefix: String): Unit = new GnuplotPlotter(chart).writeToPdf(filePrefix)
+  def pdf(chart: Chart, directory:String, filePrefix: String): Unit = new GnuplotPlotter(chart).writeToPdf(directory, filePrefix)
 }

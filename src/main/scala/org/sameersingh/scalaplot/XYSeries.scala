@@ -8,7 +8,7 @@ import java.io.PrintWriter
  * @date 10/9/12
  */
 abstract class XYSeries {
-  def seriesName: String
+  def name: String
 
   var plotStyle: XYPlotStyle.Type = XYPlotStyle.LinesPoints
   var color: Option[Color.Type] = None
@@ -20,13 +20,15 @@ abstract class XYSeries {
   var lineType: Option[LineType.Type] = None
   // how many points to skip between plots
   var every: Option[Int] = None
+
+  def points: Iterable[(Double, Double)]
 }
 
-class FileXYSeries(val xcol: Int, val ycol: Int, val seriesName: String, val dataFilename: String) extends XYSeries {
-
+class FileXYSeries(val xcol: Int, val ycol: Int, val name: String, val dataFilename: String) extends XYSeries {
+  def points = throw new Error("not implemented")
 }
 
-class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val seriesName: String) extends XYSeries {
+class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val name: String) extends XYSeries {
   assert(xs.length == ys.length)
 
   def isLarge: Boolean = xs.length > 1000
@@ -40,6 +42,8 @@ class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val seriesName: Stri
   }
 
   def toStrings(): Seq[String] = (0 until xs.length).map(i => xs(i).toString + "\t" + ys(i).toString)
+
+  def points = xs.zip(ys).seq
 }
 
 object XYPlotStyle extends Enumeration {

@@ -1,22 +1,16 @@
 package org.sameersingh.scalaplot
 
+import java.io.File
+
 /**
  * @author sameer
  * @date 10/25/12
  */
 abstract class Plotter(val chart: Chart) {
 
-  def writeToPdf(filenamePrefix: String): Unit
+  def writeToPdf(directory: String, filenamePrefix: String): Unit
 
-  def plotChart(chart: Chart): Unit
+  def writeToPdf(file: File): Unit = writeToPdf(file.getParent + "/", file.getName)
 
-  def plotXYChart(chart: XYChart): Unit
-
-  def plotXYData(data: XYData): Unit
-
-  def plotXYSeries(series: XYSeries): Unit
-
-  def plotMemXYSeries(series: MemXYSeries): Unit
-
-  def plotFileXYSeries(series: FileXYSeries): Unit
+  def gui(): Unit = throw new Error("gui() not implemented")
 }
