@@ -82,7 +82,7 @@ followed by
 	
 produces
 
-![Example gnuplot output](docs/img/gnuplot.png)
+![Example gnuplot output](https://github.com/sameersingh/scalaplot/raw/master/docs/img/gnuplot.png)
 
 ### JFreegraph
 
@@ -94,7 +94,7 @@ However, it also supports a `gui()` option for when you just want to see the gra
 
 produces
 
-![Example jfreegraph output](docs/img/jfreegraph.png)
+![Example jfreegraph output](https://github.com/sameersingh/scalaplot/raw/master/docs/img/jfreegraph.png)
 
 ### Matplotlib
 
