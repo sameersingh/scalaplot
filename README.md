@@ -67,6 +67,8 @@ Let's create the chart.
 
 ## Rendering Charts
 
+Even though multiple backends are being supported to render the charts, gnuplot is the most actively developed and supported since it allows post plotting customizations (editing the script files), may possible output formats, and ease of use.
+
 ### Gnuplot
 
 Generates gnuplot scripts that will need to be run to actually generate the images.
