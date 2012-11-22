@@ -17,6 +17,7 @@ import org.jfree.chart.title.LegendTitle
 import org.jfree.chart.annotations.XYTitleAnnotation
 import org.jfree.chart.axis.LogarithmicAxis
 import java.awt.Color
+import org.jfree.ui.RectangleEdge
 
 /**
  * @author sameer
@@ -53,6 +54,7 @@ class JFGraphPlotter(chart: Chart) extends Plotter(chart) {
         case LegendPosY.Center => 0.5
         case LegendPosY.Top => 0.9
       }
+      legendTitle.setPosition(RectangleEdge.RIGHT)
       val ta = new XYTitleAnnotation(legendPosX, legendPosY, legendTitle)
       ta.setMaxWidth(0.48)
       plot.addAnnotation(ta)
