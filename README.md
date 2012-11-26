@@ -1,7 +1,13 @@
 scalaplot
 =========
 
-This is a library for quick and easy plotting of simple plots (such as XY line plots, scatter plots) and supports outputs using a few different engines (such as Gnuplot, JFreeGraph, and matplotlib). **Note:** The project is still very much in *alpha*. If you just need a clean way to interface with gnuplot, see [gnujavaplot](http://gnujavaplot.sourceforge.net/JavaPlot/About.html).
+This is a library for quick and easy plotting of simple plots (such as XY line plots, scatter plots) and supports outputs using a few different engines (such as Gnuplot, JFreeGraph, and matplotlib). **Note:** The project is still very much in *alpha*. If you just need a clean way to interface Java with gnuplot, see [gnujavaplot](http://gnujavaplot.sourceforge.net/JavaPlot/About.html).
+
+## Requirements
+
+- maven
+- *for gnuplot*: [gnuplot 4.6](http://www.gnuplot.info/) with pdf support (on the mac+[homebrew](http://mxcl.github.com/homebrew/), `brew install pdflib-lite gnuplot`)
+- *for jfreechart*: None
 
 ## Installation
 
