@@ -29,6 +29,8 @@ class FileXYSeries(val xcol: Int, val ycol: Int, val name: String, val dataFilen
 }
 
 class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val name: String) extends XYSeries {
+  def this(points: Seq[(Double, Double)], name: String) = this(points.map(_._1), points.map(_._2), name)
+
   assert(xs.length == ys.length)
 
   def isLarge: Boolean = xs.length > 1000

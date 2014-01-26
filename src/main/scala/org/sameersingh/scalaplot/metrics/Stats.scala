@@ -14,10 +14,10 @@ object Stats {
     for (x <- points) {
       n += 1.0
       // delta = x - mean
-      // mean = mean + delta/n
-      // M2 = M2 + delta*(x - mean)
       val delta = x - mv
+      // mean = mean + delta/n
       mv = mv + delta / n
+      // M2 = M2 + delta*(x - mean)
       m2 = m2 + delta * (x - mv)
     }
     (mv, m2 / (n - 1))
