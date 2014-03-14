@@ -18,7 +18,7 @@ class MetricsTest {
     val hist = new Histogram(1)
     val bins = hist.bin(points, 0.0, 1.0)
     assertEquals(1, bins.size)
-    assertEquals(0.5, bins.head._1, 1e-9)
+    assertEquals(0.5, bins.head._1, 1e-8)
     assertEquals(100, bins.head._2)
     //println(bins)
   }
@@ -36,8 +36,8 @@ class MetricsTest {
     val stdDev = Stats.standardDev(bins.map(_._2.toDouble / (numPoints / numBins)))
     val mean = Stats.mean(bins.map(_._2.toDouble / (numPoints / numBins)))
     println(mean)
-    assertEquals(1.0, mean, 1e-5)
-    assertTrue(stdDev < 0.025)
+    assertEquals(1.0, mean, 1e-4)
+    assertTrue(stdDev < 0.05)
   }
 
   @Test
@@ -52,7 +52,7 @@ class MetricsTest {
     assertEquals(numPoints, bins.map(_._2).sum)
     val stdDev = Stats.standardDev(bins.map(_._2.toDouble / (numPoints / numBins)))
     println(stdDev)
-    assertEquals(1.0, stdDev, 0.1)
+    assertEquals(1.0, stdDev, 0.25)
   }
 
   @Test
