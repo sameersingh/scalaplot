@@ -179,8 +179,8 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 
   def writeToPdf(directory: String, filenamePrefix: String) {
     // write the description
-    assert(new File(directory).isDirectory)
-    assert(directory.endsWith("/"))
+    assert(new File(directory).isDirectory, directory + " should be a directory")
+    assert(directory.endsWith("/"), directory + " should end with a /")
     reset
     this.directory = directory
     filename = filenamePrefix
