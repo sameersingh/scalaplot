@@ -137,8 +137,8 @@
     </plugins>
   </build>
   <scm>
-    <connection>scm:git:git@github.com:sameersingh/scalaplot.git</connection>
-    <url>scm:git:git@github.com:sameersingh/scalaplot.git</url>
-    <developerConnection>scm:git:git@github.com:sameersingh.scalaplot.git</developerConnection>
+    <url>https://github.com/sameersingh/scalaplot</url>
+    <connection>scm:git:git://github.com/sameersingh/scalaplot.git</connection>
+    <developerConnection>scm:git:git@github.com:sameersingh/scalaplot.git</developerConnection>
   </scm>
 </project>
