@@ -78,3 +78,13 @@ class XYChart(chartTitle: Option[String], val data: XYData) extends Chart with N
 
   def ylabel_=(yl: String) = _ylabel = yl
 }
+
+trait XYChartImplicits extends XYDataImplicits {
+  implicit def dataToChart(d: XYData): XYChart = new XYChart(d)
+
+  implicit def stringToOptionString(string: String): Option[String] = if(string.isEmpty) None else Some(string)
+
+  def plot(data: XYData, title: String = ""): XYChart = new XYChart(stringToOptionString(title), data)
+}
+
+object XYChartImplicits extends XYChartImplicits

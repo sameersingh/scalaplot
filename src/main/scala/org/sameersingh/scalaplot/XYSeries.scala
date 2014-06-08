@@ -28,8 +28,8 @@ class FileXYSeries(val xcol: Int, val ycol: Int, val name: String, val dataFilen
   def points = throw new Error("not implemented")
 }
 
-class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val name: String) extends XYSeries {
-  def this(points: Seq[(Double, Double)], name: String) = this(points.map(_._1), points.map(_._2), name)
+class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val name: String = "Label") extends XYSeries {
+  def this(points: Seq[(Double, Double)], name: String = "Label") = this(points.map(_._1), points.map(_._2), name)
 
   assert(xs.length == ys.length)
 
@@ -68,3 +68,32 @@ object Color extends Enumeration {
   val Black, Grey, Red, Green, Blue, Magenta, Cyan, Maroon, Mustard, RoyalBlue, Gold, DarkGreen, Purple, SteelBlue, Yellow = Value
 }
 
+trait XYSeriesImplicits {
+  case class Y(ys: Seq[Double], label: String = "y", style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
+               color: Option[Color.Type] = None,
+               ps: Option[Double] = None,
+               pt: Option[PointType.Type] = None,
+               lw: Option[Double] = None,
+               lt: Option[LineType.Type] = None,
+               every: Option[Int] = None)
+
+  def series(xs: Seq[Double], y: Y): XYSeries = {
+    val s = new MemXYSeries(xs, y.ys, y.label)
+    s.color = y.color
+    s.plotStyle = y.style
+    s.pointSize = y.ps
+    s.pointType = y.pt
+    s.lineWidth = y.lw
+    s.lineType = y.lt
+    s.every = y.every
+    s
+  }
+
+  implicit def xyspectoSeries(xy: Pair[Seq[Double], Y]): XYSeries = series(xy._1, xy._2)
+
+  implicit def pairSeqToSeries(xys: Iterable[(Double, Double)]): XYSeries = new MemXYSeries(xys.toSeq)
+
+  implicit def seqPairToSeries(xy: Pair[Iterable[Double], Iterable[Double]]): XYSeries = new MemXYSeries(xy._1.toSeq, xy._2.toSeq)
+}
+
+object XYSeriesImplicits extends XYSeriesImplicits
