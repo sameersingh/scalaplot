@@ -42,11 +42,14 @@ class ExampleTest {
     val y1 = (1 until 100).map(j => math.pow(j, 1))
     val y2 = (1 until 100).map(j => math.pow(j, 2))
     val y3 = (1 until 100).map(j => math.pow(j, 3))
+    val xy1 = x zip y1
+    val xy2 = x zip y2
 
     // series
     val s1: XYSeries = x -> y1
     val s2: XYSeries = x zip y2
     val s3: XYSeries = x -> Y(y3)
+    val s4: XYSeries = XY(xy1)
     val f1 = math.sin(_)
     val s1f: XYSeries = x -> f1
     val s2f: XYSeries = x -> Yf(math.sin)
@@ -77,6 +80,8 @@ class ExampleTest {
     val y1 = (1 until 100).map(j => math.pow(j, 1))
     val y2 = (1 until 100).map(j => math.pow(j, 2))
     val y3 = (1 until 100).map(j => math.pow(j, 3))
+    val xy1 = x zip y1
+    val xy2 = x zip y2
     // series
     val s1: XYSeries = x -> y1
     val s2: XYSeries = x zip y2
@@ -88,11 +93,13 @@ class ExampleTest {
 
     // chart with series
     val c2 = plot(data = s1)
-    val c3 = plot(s1)
+    val c3 = plot(s1 :: s2 :: List())
 
     // chart without series
-    val c5 = plot(x -> (y1, y2, y3))
-    val c6 = plot(x -> (math.sin(_), math.cos(_)))
-    val c7 = plot(data = x -> (y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
+    val c4 = plot(x -> (y1, y2, y3))
+    val c5 = plot(x -> Y(y1) :: x -> Y(y2) :: List())
+    val c6 = plot(XY(xy1) :: XY(xy2) :: List())
+    val c7 = plot(x -> (math.sin(_), math.cos(_)))
+    val c8 = plot(x -> (y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
   }
 }

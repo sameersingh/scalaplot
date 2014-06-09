@@ -77,6 +77,8 @@ trait XYDataImplicits extends XYSeriesImplicits {
 
   implicit def xYsToData(xys: Pair[Seq[Double], Iterable[Y]]): XYData = new XYData(xys._2.map(y => series(xys._1, y)).toSeq: _*)
 
+  implicit def xYSeqToData(xys: Iterable[Pair[Seq[Double], Y]]): XYData = new XYData(xys.map(xy => series(xy._1, xy._2)).toSeq: _*)
+
   implicit def data(xs: Seq[Double], ys: Y*): XYData = new XYData(ys.map(y => series(xs, y)).toSeq: _*)
 }
 
