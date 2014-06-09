@@ -66,7 +66,23 @@ trait XYChartImplicits extends XYDataImplicits {
 
   def plot(data: XYData, title: String = "",
            x: NumericAxis = new NumericAxis,
-           y: NumericAxis = new NumericAxis): XYChart = new XYChart(stringToOptionString(title), data, x, y)
+           y: NumericAxis = new NumericAxis,
+           pointSize: Option[Double] = None,
+           legendPosX: LegendPosX.Type = LegendPosX.Right,
+           legendPosY: LegendPosY.Type = LegendPosY.Center,
+           showLegend: Boolean = false,
+           monochrome: Boolean = false,
+           size: Option[(Double, Double)] = None
+            ): XYChart = {
+    val c = new XYChart(stringToOptionString(title), data, x, y)
+    c.pointSize = pointSize
+    c.legendPosX = legendPosX
+    c.legendPosY = legendPosY
+    c.showLegend = showLegend
+    c.monochrome = monochrome
+    c.size = size
+    c
+  }
 }
 
 object XYChartImplicits extends XYChartImplicits
