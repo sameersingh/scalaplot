@@ -69,16 +69,62 @@ object Color extends Enumeration {
 }
 
 trait XYSeriesImplicits {
-  case class Y(ys: Seq[Double], label: String = "y", style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
-               color: Option[Color.Type] = None,
-               ps: Option[Double] = None,
-               pt: Option[PointType.Type] = None,
-               lw: Option[Double] = None,
-               lt: Option[LineType.Type] = None,
-               every: Option[Int] = None)
+
+  trait YPoints {
+    def xsToYs(xs: Seq[Double]): Seq[Double]
+  }
+
+  //  implicit def seqToYpoints(ys: Seq[Double]): YPoints = new YPoints {
+  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = ys
+  //  }
+  //
+  //  implicit def funcToYpoints(f: Double => Double): YPoints = new YPoints {
+  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(f)
+  //  }
+
+  //  implicit def paraFuncToYpoints(f: (Double) => Double): YPoints = new YPoints {
+  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(x => f(x))
+  //  }
+
+  abstract class Y(val label: String = "y",
+                   val style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
+                   val color: Option[Color.Type] = None,
+                   val ps: Option[Double] = None,
+                   val pt: Option[PointType.Type] = None,
+                   val lw: Option[Double] = None,
+                   val lt: Option[LineType.Type] = None,
+                   val every: Option[Int] = None) extends YPoints
+
+  object Y {
+    def apply(yp: Seq[Double],
+              label: String = "y",
+              style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
+              color: Option[Color.Type] = None,
+              ps: Option[Double] = None,
+              pt: Option[PointType.Type] = None,
+              lw: Option[Double] = None,
+              lt: Option[LineType.Type] = None,
+              every: Option[Int] = None): Y = new Y(label, style, color, ps, pt, lw, lt, every) {
+      override def xsToYs(xs: Seq[Double]): Seq[Double] = yp
+    }
+  }
+
+  object Yf {
+    def apply(f: Double => Double,
+              label: String = "y",
+              style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
+              color: Option[Color.Type] = None,
+              ps: Option[Double] = None,
+              pt: Option[PointType.Type] = None,
+              lw: Option[Double] = None,
+              lt: Option[LineType.Type] = None,
+              every: Option[Int] = None): Y = new Y(label, style, color, ps, pt, lw, lt, every) {
+      override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(f)
+    }
+  }
 
   def series(xs: Seq[Double], y: Y): XYSeries = {
-    val s = new MemXYSeries(xs, y.ys, y.label)
+    val s = new MemXYSeries(xs, y.xsToYs(xs), y.label)
     s.color = y.color
     s.plotStyle = y.style
     s.pointSize = y.ps
@@ -89,11 +135,13 @@ trait XYSeriesImplicits {
     s
   }
 
-  implicit def xyspectoSeries(xy: Pair[Seq[Double], Y]): XYSeries = series(xy._1, xy._2)
-
   implicit def pairSeqToSeries(xys: Iterable[(Double, Double)]): XYSeries = new MemXYSeries(xys.toSeq)
 
   implicit def seqPairToSeries(xy: Pair[Iterable[Double], Iterable[Double]]): XYSeries = new MemXYSeries(xy._1.toSeq, xy._2.toSeq)
+
+  implicit def seqFuncPairToSeries(xy: Pair[Iterable[Double], Double => Double]): XYSeries = new MemXYSeries(xy._1.toSeq, xy._1.map(xy._2).toSeq)
+
+  implicit def xyspectoSeries(xy: Pair[Seq[Double], Y]): XYSeries = series(xy._1, xy._2)
 }
 
 object XYSeriesImplicits extends XYSeriesImplicits

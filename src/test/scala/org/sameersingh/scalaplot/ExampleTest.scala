@@ -47,6 +47,10 @@ class ExampleTest {
     val s1: XYSeries = x -> y1
     val s2: XYSeries = x zip y2
     val s3: XYSeries = x -> Y(y3)
+    val f1 = math.sin(_)
+    val f2 = math.cos(_)
+    val s1f: XYSeries = x -> f1
+    val s2f: XYSeries = x -> Yf(math.sin)
 
     // data using series
     val d1: XYData = s1
@@ -55,6 +59,8 @@ class ExampleTest {
     // data without series
     val d3: XYData = x -> Seq(Y(y1), Y(y2), Y(y3))
     val d4: XYData = x -> Ys(y1, y2, y3)
+    val d3f: XYData = x -> Seq(Yf(math.sin), Yf(math.cos), Yf(math.tan))
+    val d4f: XYData = x -> Yfs(f1, f2)
   }
 
   @Test

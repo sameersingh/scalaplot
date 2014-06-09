@@ -18,7 +18,6 @@ class XYData(ss: XYSeries*) {
 }
 
 trait XYDataImplicits extends XYSeriesImplicits {
-
   implicit def seriesSeqToData(ss: Iterable[XYSeries]): XYData = new XYData(ss.toSeq: _*)
 
   implicit def seriesToData(s: XYSeries): XYData = new XYData(s)
@@ -30,6 +29,12 @@ trait XYDataImplicits extends XYSeriesImplicits {
   def Ys(ys: Iterable[Seq[Double]]): Seq[Y] = ys.map(y => Y(y)).toSeq
 
   def Ys(ys: Seq[Double]*): Seq[Y] = ys.map(y => Y(y)).toSeq
+
+  type Func = Double => Double
+
+  def Yfs(fs: Iterable[Double => Double]): Seq[Y] = fs.map(f => Yf(f)).toSeq
+
+  def Yfs(fs: Func*): Seq[Y] = fs.map(f => Yf(f)).toSeq
 
   implicit def xYsToData(xys: Pair[Seq[Double], Iterable[Y]]): XYData = new XYData(xys._2.map(y => series(xys._1, y)).toSeq: _*)
 
