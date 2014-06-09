@@ -48,19 +48,25 @@ class ExampleTest {
     val s2: XYSeries = x zip y2
     val s3: XYSeries = x -> Y(y3)
     val f1 = math.sin(_)
-    val f2 = math.cos(_)
     val s1f: XYSeries = x -> f1
     val s2f: XYSeries = x -> Yf(math.sin)
 
     // data using series
     val d1: XYData = s1
     val d2: XYData = Seq(s1, s2)
+    val d2l: XYData = s1 :: s2 :: List()
 
     // data without series
-    val d3: XYData = x -> Seq(Y(y1), Y(y2), Y(y3))
-    val d4: XYData = x -> Ys(y1, y2, y3)
-    val d3f: XYData = x -> Seq(Yf(math.sin), Yf(math.cos), Yf(math.tan))
-    val d4f: XYData = x -> Yfs(f1, f2)
+    val d3: XYData = x -> (y1, y2, y3) // easiest, limited to 6
+    val d4: XYData = x -> Ys(y1, y2, y3) // unlimited
+    val d5: XYData = x -> (Y(y1, "Y1"), Y(y2, color = Color.Blue), Y(y3, lw = 3.0)) // <=6, arbitrary customization
+    val d6: XYData = x -> Seq(Y(y1), Y(y2), Y(y3)) // unlimited, arbitrary customization
+
+    // same as above, but with functions instead
+    val d3f: XYData = x -> (math.sin(_), math.cos(_))
+    val d4f: XYData = x -> Yfs(math.sin, math.cos)
+    val d5f: XYData = x -> Seq(Yf(math.sin, "sin"), Yf(math.cos, color = Color.Blue), Yf(math.tan, lw = 3.0))
+    val d6f: XYData = x -> (Yf(math.sin), Yf(math.cos), Yf(math.tan))
   }
 
   @Test
@@ -85,7 +91,8 @@ class ExampleTest {
     val c3 = plot(s1)
 
     // chart without series
-    val c5 = plot(data = x -> Ys(y1, y2, y3))
-    val c6 = plot(x -> Ys(y1, y2, y3))
+    val c5 = plot(x -> (y1, y2, y3))
+    val c6 = plot(x -> (math.sin(_), math.cos(_)))
+    val c7 = plot(data = x -> (y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
   }
 }

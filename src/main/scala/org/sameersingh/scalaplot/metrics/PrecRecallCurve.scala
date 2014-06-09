@@ -79,8 +79,8 @@ class PrecRecallCurve(data: Seq[(Double, Boolean)]) {
 
   private def createChart(f: PRPoint => (Double,Double), title: String, xname: String = "", yname: String = ""): XYChart = {
     val c = new XYChart(title, new XYData(new MemXYSeries(curve.map(d => f(d)), title)))
-    c.xlabel = xname
-    c.ylabel = yname
+    c.x.label = xname
+    c.y.label = yname
     c
   }
 
@@ -90,8 +90,8 @@ class PrecRecallCurve(data: Seq[(Double, Boolean)]) {
     xyData += new MemXYSeries(curve.map(d => (d.thresh, d.recall)), "Recall")
     xyData += new MemXYSeries(curve.map(d => (d.thresh, d.f1)), "F1")
     val c = new XYChart(title, xyData)
-    c.xlabel = "Threshold"
-    c.ylabel = "Measure"
+    c.x.label = "Threshold"
+    c.y.label = "Measure"
     c
   }
 

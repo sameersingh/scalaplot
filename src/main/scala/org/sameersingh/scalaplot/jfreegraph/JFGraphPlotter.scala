@@ -38,7 +38,7 @@ class JFGraphPlotter(chart: Chart) extends Plotter(chart) {
 
   def plotXYChart(xyc: XYChart): JChart = {
     val data = plotXYData(xyc.data)
-    val jchart = ChartFactory.createXYLineChart(chart.title.getOrElse(""), xyc.xlabel, xyc.ylabel, data, PlotOrientation.VERTICAL, false, false, false)
+    val jchart = ChartFactory.createXYLineChart(chart.title.getOrElse(""), xyc.x.label, xyc.y.label, data, PlotOrientation.VERTICAL, false, false, false)
     val plot = jchart.getXYPlot()
     plot.setBackgroundPaint(Color.white)
     // add legend
@@ -60,8 +60,8 @@ class JFGraphPlotter(chart: Chart) extends Plotter(chart) {
       plot.addAnnotation(ta)
     }
     // log axis
-    if (xyc.isLogX) plot.setDomainAxis(new LogarithmicAxis(plot.getDomainAxis.getLabel))
-    if (xyc.isLogY) plot.setRangeAxis(new LogarithmicAxis(plot.getRangeAxis.getLabel))
+    if (xyc.x.isLog) plot.setDomainAxis(new LogarithmicAxis(plot.getDomainAxis.getLabel))
+    if (xyc.y.isLog) plot.setRangeAxis(new LogarithmicAxis(plot.getRangeAxis.getLabel))
     // axis ranges
     // TODO
     jchart
@@ -129,8 +129,8 @@ object JFGraphPlotter {
     val series = new MemXYSeries((1 until 100).map(_.toDouble), (1 until 100).map(i => (i * i).toDouble), "Series")
     val data = new XYData(series)
     val chart = new XYChart("Chart", data)
-    chart.logX
-    chart.logY
+    chart.x.log
+    chart.y.log
     val plotter = new JFGraphPlotter(chart)
     plotter.gui()
   }

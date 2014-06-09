@@ -96,18 +96,18 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 
   def plotXYChart(chart: XYChart) {
     lines += "# XYChart settings"
-    if (chart.isLogX && chart.isLogY) lines += "set logscale"
-    else if (chart.isLogX) lines += "set logscale x"
-    else if (chart.isLogY) lines += "set logscale y"
+    if (chart.x.isLog && chart.y.isLog) lines += "set logscale"
+    else if (chart.x.isLog) lines += "set logscale x"
+    else if (chart.y.isLog) lines += "set logscale y"
     else lines += "set nologscale"
-    var xr1s = if (chart.minX.isDefined) chart.minX.get.toString else "*"
-    var xr2s = if (chart.maxX.isDefined) chart.maxX.get.toString else "*"
-    var yr1s = if (chart.minY.isDefined) chart.minY.get.toString else "*"
-    var yr2s = if (chart.maxY.isDefined) chart.maxY.get.toString else "*"
-    lines += "set xr [%s:%s] %sreverse" format(xr1s, xr2s, if (chart.isBackwardX) "" else "no")
-    lines += "set yr [%s:%s] %sreverse" format(yr1s, yr2s, if (chart.isBackwardY) "" else "no")
-    lines += "set xlabel \"%s\"" format (chart.xlabel)
-    lines += "set ylabel \"%s\"" format (chart.ylabel)
+    var xr1s = if (chart.x.min.isDefined) chart.x.min.get.toString else "*"
+    var xr2s = if (chart.x.max.isDefined) chart.x.max.get.toString else "*"
+    var yr1s = if (chart.y.min.isDefined) chart.y.min.get.toString else "*"
+    var yr2s = if (chart.y.max.isDefined) chart.y.max.get.toString else "*"
+    lines += "set xr [%s:%s] %sreverse" format(xr1s, xr2s, if (chart.x.isBackward) "" else "no")
+    lines += "set yr [%s:%s] %sreverse" format(yr1s, yr2s, if (chart.y.isBackward) "" else "no")
+    lines += "set xlabel \"%s\"" format (chart.x.label)
+    lines += "set ylabel \"%s\"" format (chart.y.label)
     plotXYData(chart.data)
   }
 

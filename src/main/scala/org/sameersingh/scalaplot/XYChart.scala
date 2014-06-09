@@ -6,85 +6,67 @@ import collection.mutable.{ArrayBuffer, Buffer}
  * @author sameer
  * @date 10/9/12
  */
-trait NumericX {
-  private var _xrange: Pair[Option[Double], Option[Double]] = (None, None)
-  protected var _reverseX: Boolean = false
-  private var _logX: Boolean = false
+class NumericAxis {
+  private var _label: String = ""
+  private var _range: Pair[Option[Double], Option[Double]] = (None, None)
+  protected var _reverse: Boolean = false
+  private var _log: Boolean = false
 
-  def isBackwardX = _reverseX
+  def label = _label
 
-  def backwardX = _reverseX = true
+  def label_=(l: String) = _label = l
 
-  def forwardX = _reverseX = false
+  def isBackward = _reverse
 
-  def isLogX = _logX
+  def backward = _reverse = true
 
-  def logX = _logX = true
+  def forward = _reverse = false
 
-  def linearX = _logX = false
+  def isLog = _log
 
-  def xrange_=(min: Double, max: Double) = _xrange = (Some(min), Some(max))
+  def log = _log = true
 
-  def minX = _xrange._1
+  def linear = _log = false
 
-  def maxX = _xrange._2
+  def range_=(minMax: Pair[Double, Double]) = _range = (Some(minMax._1), Some(minMax._2))
 
-  def resetXRange = _xrange = (None, None)
+  def min = _range._1
+
+  def max = _range._2
+
+  def resetRange = _range = (None, None)
 }
 
-trait NumericY {
-  private var _yrange: Pair[Option[Double], Option[Double]] = (None, None)
-  private var _reverseY: Boolean = false
-  private var _logY: Boolean = false
-
-  def isBackwardY = _reverseY
-
-  def backwardY = _reverseY = true
-
-  def forwardY = _reverseY = false
-
-  def isLogY = _logY
-
-  def logY = _logY = true
-
-  def linearY = _logY = false
-
-  def yrange_=(min: Double, max: Double) = _yrange = (Some(min), Some(max))
-
-  def minY = _yrange._1
-
-  def maxY = _yrange._2
-
-  def resetYRange = _yrange = (None, None)
-
-}
-
-class XYChart(chartTitle: Option[String], val data: XYData) extends Chart with NumericX with NumericY {
+class XYChart(chartTitle: Option[String], val data: XYData,
+              val x: NumericAxis = new NumericAxis, val y: NumericAxis = new NumericAxis) extends Chart {
 
   def this(chartTitle: String, data: XYData) = this(Some(chartTitle), data)
 
   def this(data: XYData) = this(None, data)
 
-  private var _xlabel: String = ""
-  private var _ylabel: String = ""
-
   override def title = chartTitle
-
-  def xlabel = _xlabel
-
-  def xlabel_=(xl: String) = _xlabel = xl
-
-  def ylabel = _ylabel
-
-  def ylabel_=(yl: String) = _ylabel = yl
 }
 
 trait XYChartImplicits extends XYDataImplicits {
   implicit def dataToChart(d: XYData): XYChart = new XYChart(d)
 
-  implicit def stringToOptionString(string: String): Option[String] = if(string.isEmpty) None else Some(string)
+  implicit def stringToOptionString(string: String): Option[String] = if (string.isEmpty) None else Some(string)
 
-  def plot(data: XYData, title: String = ""): XYChart = new XYChart(stringToOptionString(title), data)
+  def Axis(label: String = "", backward: Boolean = false, log: Boolean = false,
+           range: Option[(Double, Double)] = None): NumericAxis = {
+    val a = new NumericAxis
+    a.label = label
+    if (backward) a.backward else a.forward
+    if (log) a.log else a.linear
+    range.foreach({
+      case (min, max) => a.range_=(min -> max)
+    })
+    a
+  }
+
+  def plot(data: XYData, title: String = "",
+           x: NumericAxis = new NumericAxis,
+           y: NumericAxis = new NumericAxis): XYChart = new XYChart(stringToOptionString(title), data, x, y)
 }
 
 object XYChartImplicits extends XYChartImplicits

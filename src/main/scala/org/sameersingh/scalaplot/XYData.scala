@@ -30,6 +30,45 @@ trait XYDataImplicits extends XYSeriesImplicits {
 
   def Ys(ys: Seq[Double]*): Seq[Y] = ys.map(y => Y(y)).toSeq
 
+  // seq of double
+  implicit def xSeqYToData(xy: Pair[Seq[Double], Seq[Double]]): XYData = xy._1 -> Ys(xy._2)
+
+  implicit def xSeqY2ToData(xy: Pair[Seq[Double], Product2[Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2)
+
+  implicit def xSeqY3ToData(xy: Pair[Seq[Double], Product3[Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3)
+
+  implicit def xSeqY4ToData(xy: Pair[Seq[Double], Product4[Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3, xy._2._4)
+
+  implicit def xSeqY5ToData(xy: Pair[Seq[Double], Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5)
+
+  implicit def xSeqY6ToData(xy: Pair[Seq[Double], Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5, xy._2._6)
+
+  // seq of funcs
+  implicit def xFYToData(xy: Pair[Seq[Double], Double => Double]): XYData = xy._1 -> Yfs(xy._2)
+
+  implicit def xFY2ToData(xy: Pair[Seq[Double], Product2[Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2)
+
+  implicit def xFY3ToData(xy: Pair[Seq[Double], Product3[Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3)
+
+  implicit def xFY4ToData(xy: Pair[Seq[Double], Product4[Double => Double, Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3, xy._2._4)
+
+  implicit def xFY5ToData(xy: Pair[Seq[Double], Product5[Double => Double, Double => Double, Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5)
+
+  implicit def xFY6ToData(xy: Pair[Seq[Double], Product6[Double => Double, Double => Double, Double => Double, Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5, xy._2._6)
+
+  // seq of Ys
+  implicit def xYToData(xy: Pair[Seq[Double], Y]): XYData = xy._1 -> Seq(xy._2)
+
+  implicit def xY2ToData(xy: Pair[Seq[Double], Product2[Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2)
+
+  implicit def xY3ToData(xy: Pair[Seq[Double], Product3[Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3)
+
+  implicit def xY4ToData(xy: Pair[Seq[Double], Product4[Y, Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3, xy._2._4)
+
+  implicit def xY5ToData(xy: Pair[Seq[Double], Product5[Y, Y, Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5)
+
+  implicit def xY6ToData(xy: Pair[Seq[Double], Product6[Y, Y, Y, Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5, xy._2._6)
+
   type Func = Double => Double
 
   def Yfs(fs: Iterable[Double => Double]): Seq[Y] = fs.map(f => Yf(f)).toSeq
