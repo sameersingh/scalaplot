@@ -2,7 +2,7 @@ package org.sameersingh.scalaplot.gnuplot
 
 import org.sameersingh.scalaplot._
 import collection.mutable.ArrayBuffer
-import java.io.{File, PrintWriter}
+import java.io.{InputStreamReader, BufferedReader, File, PrintWriter}
 
 /**
  * @author sameer
@@ -202,8 +202,110 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     }
     writer.close()
   }
+
+  def html(directory: String, filenamePrefix: String, standalone: Boolean = true,
+               jsDir: String = "/usr/local/Cellar/gnuplot/4.6.5/share/gnuplot/4.6/js/"): String = {
+    // write the description
+    assert(new File(directory).isDirectory, directory + " should be a directory")
+    assert(directory.endsWith("/"), directory + " should end with a /")
+    reset
+    this.directory = directory
+    filename = filenamePrefix
+    plotChart(chart)
+    chart match {
+      case xyc: XYChart => plotXYChart(xyc)
+    }
+    lines += "# Wrapup"
+    lines += "set terminal canvas enhanced name \"%s\"" format (filenamePrefix)
+    lines += "set output \"%s\"" format (filename + (if (standalone) ".html" else ".js"))
+    lines += "refresh"
+    lines += "unset output"
+    val scriptFile = directory + filenamePrefix + ".gpl"
+    val writer = new PrintWriter(scriptFile)
+    for (line <- lines) {
+      writer.println(line)
+    }
+    writer.close()
+    if (!standalone) {
+      val writer = new PrintWriter(directory + filenamePrefix + ".html")
+      writer.println(htmlWrap(directory, filenamePrefix))
+      writer.flush()
+      writer.close()
+    }
+    runGnuplot(directory, filenamePrefix)
+  }
+
+  def js(directory: String, filenamePrefix: String): String = {
+    // write the description
+    assert(new File(directory).isDirectory, directory + " should be a directory")
+    assert(directory.endsWith("/"), directory + " should end with a /")
+    reset
+    this.directory = directory
+    filename = filenamePrefix
+    plotChart(chart)
+    chart match {
+      case xyc: XYChart => plotXYChart(xyc)
+    }
+    lines += "# Wrapup"
+    lines += "set terminal canvas enhanced name \"%s\"" format (filenamePrefix)
+    lines += "set output \"%s\"" format (filename + ".js")
+    lines += "refresh"
+    lines += "unset output"
+    val scriptFile = directory + filenamePrefix + ".gpl"
+    val writer = new PrintWriter(scriptFile)
+    for (line <- lines) {
+      writer.println(line)
+    }
+    writer.close()
+    val str = runGnuplot(directory, filenamePrefix)
+    htmlWrap(directory, filenamePrefix)
+  }
+
+  private def htmlWrap(directory: String, filenamePrefix: String, jsDir: String = "/usr/local/Cellar/gnuplot/4.6.5/share/gnuplot/4.6/js/") = {
+    """
+      |       <html>
+      |       <head>
+      |           <script src="%s/canvastext.js"></script>
+      |           <script src="%s/gnuplot_common.js"></script>
+      |           <script src="%s/gnuplot_mouse.js"></script>
+      |       </head>
+      |       <body onload="%s();">
+      |           <script src="%s.js"></script>
+      |           <canvas id="%s" width=600 height=400>
+      |               <div id="err_msg">No support for HTML 5 canvas element</div>
+      |           </canvas>
+      |       </body>
+      |       </html>
+    """.stripMargin format(jsDir, jsDir, jsDir, filenamePrefix, filenamePrefix, filenamePrefix)
+  }
+
+  def runGnuplot(directory: String, filenamePrefix: String): String = {
+    var line: String = ""
+    var output = ""
+    val cmdLine = "gnuplot " + filenamePrefix + ".gpl"
+
+    try {
+      val p = Runtime.getRuntime().exec(cmdLine, Array.empty[String], new File(directory))
+      val input = new BufferedReader(new InputStreamReader(p.getInputStream()))
+      while (({
+        line = input.readLine();
+        line
+      }) != null) {
+        output += (line + '\n')
+      }
+      input.close()
+    }
+    catch {
+      case ex: Exception => ex.printStackTrace()
+    }
+    output
+  }
 }
 
 object GnuplotPlotter {
-  def pdf(chart: Chart, directory:String, filePrefix: String): Unit = new GnuplotPlotter(chart).writeToPdf(directory, filePrefix)
+  def pdf(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).writeToPdf(directory, filePrefix)
+
+  def html(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).html(directory, filePrefix, false)
+
+  def js(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).js(directory, filePrefix)
 }
