@@ -82,7 +82,7 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     sb.toString
   }
 
-  def plotChart(chart: Chart) {
+  def plotChart(chart: Chart, defaultTerminal: String = "dumb") {
     lines += "# Chart settings"
     chart.title.foreach(t => lines += "set title \"%s\"" format (t))
     chart.pointSize.foreach(t => lines += "set pointSize %f" format (t))
@@ -90,7 +90,7 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     if (chart.showLegend) {
       lines += "set key %s %s" format(chart.legendPosX.toString.toLowerCase, chart.legendPosY.toString.toLowerCase)
     } else lines += "unset key"
-    lines += "set terminal dumb enhanced"
+    lines += "set terminal " + defaultTerminal
     lines += ""
   }
 
@@ -100,10 +100,10 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     else if (chart.x.isLog) lines += "set logscale x"
     else if (chart.y.isLog) lines += "set logscale y"
     else lines += "set nologscale"
-    var xr1s = if (chart.x.min.isDefined) chart.x.min.get.toString else "*"
-    var xr2s = if (chart.x.max.isDefined) chart.x.max.get.toString else "*"
-    var yr1s = if (chart.y.min.isDefined) chart.y.min.get.toString else "*"
-    var yr2s = if (chart.y.max.isDefined) chart.y.max.get.toString else "*"
+    val xr1s = if (chart.x.min.isDefined) chart.x.min.get.toString else "*"
+    val xr2s = if (chart.x.max.isDefined) chart.x.max.get.toString else "*"
+    val yr1s = if (chart.y.min.isDefined) chart.y.min.get.toString else "*"
+    val yr2s = if (chart.y.max.isDefined) chart.y.max.get.toString else "*"
     lines += "set xr [%s:%s] %sreverse" format(xr1s, xr2s, if (chart.x.isBackward) "" else "no")
     lines += "set yr [%s:%s] %sreverse" format(yr1s, yr2s, if (chart.y.isBackward) "" else "no")
     lines += "set xlabel \"%s\"" format (chart.x.label)
@@ -143,15 +143,15 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
   }
 
   def plotMemXYSeries(series: MemXYSeries) {
-    var suffix = if (isLast) "" else ", \\"
-    var dataFilename = if (series.isLarge) filename + "-" + series.name + ".dat" else "-"
-    var everyString = if (!series.every.isDefined) "" else "every %d" format (series.every.get)
+    val suffix = if (isLast) "" else ", \\"
+    val dataFilename = if (series.isLarge) filename + "-" + series.name + ".dat" else "-"
+    val everyString = if (!series.every.isDefined) "" else "every %d" format (series.every.get)
     lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(dataFilename, everyString, 1, 2, series.name, getLineStyle(series), suffix)
   }
 
   def plotFileXYSeries(series: FileXYSeries) {
-    var suffix = if (isLast) "" else ", \\"
-    var everyString = if (!series.every.isDefined) "" else "every %d" format (series.every.get)
+    val suffix = if (isLast) "" else ", \\"
+    val everyString = if (!series.every.isDefined) "" else "every %d" format (series.every.get)
     lines += "'%s' %s using %d:%d title \"%s\" %s %s" format(series.dataFilename, everyString, series.xcol, series.ycol, series.name, getLineStyle(series), suffix)
   }
 
@@ -177,22 +177,22 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 
   def postPlotFileXYSeries(series: FileXYSeries) {}
 
-  def writeToPdf(directory: String, filenamePrefix: String) {
+  def writeScriptFile(directory: String, filenamePrefix: String, terminal: String,
+                      filenameSuffix: String, stdout: Boolean = false, defaultTerminal: String = "dumb") {
     // write the description
     assert(new File(directory).isDirectory, directory + " should be a directory")
     assert(directory.endsWith("/"), directory + " should end with a /")
     reset
     this.directory = directory
     filename = filenamePrefix
-    plotChart(chart)
+    plotChart(chart, defaultTerminal)
     chart match {
       case xyc: XYChart => plotXYChart(xyc)
     }
     lines += "# Wrapup"
-    var monochromeString = if (chart.monochrome) "monochrome" else ""
-    var sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
-    lines += "set terminal pdf enhanced linewidth 3.0 %s %s" format(monochromeString, sizeString)
-    lines += "set output \"%s\"" format (filename + ".pdf")
+    lines += "set terminal pdf %s" format(terminal)
+    if(stdout) lines += "set output"
+    else lines += "set output \"%s\"" format (filename + "." + filenameSuffix)
     lines += "refresh"
     lines += "unset output"
     val scriptFile = directory + filenamePrefix + ".gpl"
@@ -201,6 +201,30 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
       writer.println(line)
     }
     writer.close()
+  }
+
+  def pdf(directory: String, filenamePrefix: String) {
+    val monochromeString = if (chart.monochrome) "monochrome" else ""
+    val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
+    val terminal = "pdf enhanced linewidth 3.0 %s %s" format(monochromeString, sizeString)
+    writeScriptFile(directory, filenamePrefix, terminal, "pdf")
+    runGnuplot(directory, filenamePrefix)
+  }
+
+  def png(directory: String, filenamePrefix: String) {
+    if (chart.monochrome) println("Warning: Monochrome ignored.")
+    val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
+    val terminal = "png enhanced %s" format(sizeString)
+    writeScriptFile(directory, filenamePrefix, terminal, "png")
+    runGnuplot(directory, filenamePrefix)
+  }
+
+  def svg(directory: String, filenamePrefix: String): String = {
+    val monochromeString = if (chart.monochrome) "monochrome" else ""
+    val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
+    val terminal = "pdf enhanced linewidth 3.0 %s %s" format(monochromeString, sizeString)
+    writeScriptFile(directory, filenamePrefix, terminal, "svg", true, "unknown")
+    runGnuplot(directory, filenamePrefix)
   }
 
   def html(directory: String, filenamePrefix: String, standalone: Boolean = true,
@@ -308,4 +332,6 @@ object GnuplotPlotter {
   def html(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).html(directory, filePrefix, false)
 
   def js(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).js(directory, filePrefix)
+
+  def png(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).js(directory, filePrefix)
 }
