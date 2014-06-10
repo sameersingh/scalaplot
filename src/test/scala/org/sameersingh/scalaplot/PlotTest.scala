@@ -28,7 +28,7 @@ class PlotTest {
     val chart = new XYChart("Chart", data)
 
     val plotter = new GnuplotPlotter(chart)
-    plotter.writeToPdf(dataFile.getParent + "/", dataFile.getName + "-onecol")
+    plotter.pdf(dataFile.getParent + "/", dataFile.getName + "-onecol")
   }
 
   @Test
@@ -49,7 +49,7 @@ class PlotTest {
     val chart = new XYChart("Chart", data)
 
     val plotter = new GnuplotPlotter(chart)
-    plotter.writeToPdf(dataFile.getParent + "/", dataFile.getName + "-twocol")
+    plotter.pdf(dataFile.getParent + "/", dataFile.getName + "-twocol")
   }
 
   @Test
@@ -60,7 +60,7 @@ class PlotTest {
     val plotter = new GnuplotPlotter(chart)
     val tmpFile = java.io.File.createTempFile("test", "dat")
     println(tmpFile.getCanonicalPath)
-    //plotter.writeToPdf(tmpFile.getCanonicalPath)
+    //plotter.pdf(tmpFile.getCanonicalPath)
   }
 
   @Test
@@ -76,7 +76,7 @@ class PlotTest {
     val plotter = new GnuplotPlotter(chart)
     val tmpFile = java.io.File.createTempFile("test", "dat")
     println(tmpFile.getCanonicalPath)
-    plotter.writeToPdf(tmpFile.getParent + "/", tmpFile.getName)
+    plotter.pdf(tmpFile.getParent + "/", tmpFile.getName)
   }
 
 }

@@ -190,8 +190,8 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
       case xyc: XYChart => plotXYChart(xyc)
     }
     lines += "# Wrapup"
-    lines += "set terminal pdf %s" format(terminal)
-    if(stdout) lines += "set output"
+    lines += "set terminal %s" format (terminal)
+    if (stdout) lines += "set output"
     else lines += "set output \"%s\"" format (filename + "." + filenameSuffix)
     lines += "refresh"
     lines += "unset output"
@@ -203,7 +203,7 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     writer.close()
   }
 
-  def pdf(directory: String, filenamePrefix: String) {
+  override def pdf(directory: String, filenamePrefix: String) {
     val monochromeString = if (chart.monochrome) "monochrome" else ""
     val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
     val terminal = "pdf enhanced linewidth 3.0 %s %s" format(monochromeString, sizeString)
@@ -211,55 +211,46 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     runGnuplot(directory, filenamePrefix)
   }
 
-  def png(directory: String, filenamePrefix: String) {
+  override def png(directory: String, filenamePrefix: String) {
     if (chart.monochrome) println("Warning: Monochrome ignored.")
     val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
-    val terminal = "png enhanced %s" format(sizeString)
+    val terminal = "png enhanced %s" format (sizeString)
     writeScriptFile(directory, filenamePrefix, terminal, "png")
     runGnuplot(directory, filenamePrefix)
   }
 
-  def svg(directory: String, filenamePrefix: String): String = {
-    val monochromeString = if (chart.monochrome) "monochrome" else ""
+  override def svg(directory: String, filenamePrefix: String): String = {
+    if (chart.monochrome) println("Warning: Monochrome ignored.")
     val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
-    val terminal = "pdf enhanced linewidth 3.0 %s %s" format(monochromeString, sizeString)
+    val terminal = "svg enhanced linewidth 3.0 %s" format (sizeString)
     writeScriptFile(directory, filenamePrefix, terminal, "svg", true, "unknown")
     runGnuplot(directory, filenamePrefix)
   }
 
-  def html(directory: String, filenamePrefix: String, standalone: Boolean = true,
-               jsDir: String = "/usr/local/Cellar/gnuplot/4.6.5/share/gnuplot/4.6/js/"): String = {
-    // write the description
-    assert(new File(directory).isDirectory, directory + " should be a directory")
-    assert(directory.endsWith("/"), directory + " should end with a /")
-    reset
-    this.directory = directory
-    filename = filenamePrefix
-    plotChart(chart)
-    chart match {
-      case xyc: XYChart => plotXYChart(xyc)
-    }
-    lines += "# Wrapup"
-    lines += "set terminal canvas enhanced name \"%s\"" format (filenamePrefix)
-    lines += "set output \"%s\"" format (filename + (if (standalone) ".html" else ".js"))
-    lines += "refresh"
-    lines += "unset output"
-    val scriptFile = directory + filenamePrefix + ".gpl"
-    val writer = new PrintWriter(scriptFile)
-    for (line <- lines) {
-      writer.println(line)
-    }
-    writer.close()
-    if (!standalone) {
-      val writer = new PrintWriter(directory + filenamePrefix + ".html")
-      writer.println(htmlWrap(directory, filenamePrefix))
-      writer.flush()
-      writer.close()
-    }
+  def string(directory: String, filenamePrefix: String): String = {
+    val terminal = "dumb enhanced"
+    writeScriptFile(directory, filenamePrefix, terminal, "txt", true, "unknown")
+    runGnuplot(directory, filenamePrefix)
+  }
+
+  def html(directory: String, filenamePrefix: String) {
+    if (chart.monochrome) println("Warning: Monochrome ignored.")
+    val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
+    val terminal = "canvas enhanced %s" format (sizeString)
+    writeScriptFile(directory, filenamePrefix, terminal, "html")
     runGnuplot(directory, filenamePrefix)
   }
 
   def js(directory: String, filenamePrefix: String): String = {
+    if (chart.monochrome) println("Warning: Monochrome ignored.")
+    val sizeString = if (chart.size.isDefined) "size %f,%f" format(chart.size.get._1, chart.size.get._2) else ""
+    val terminal = "canvas enhanced name\"%s\"" format (filenamePrefix)
+    writeScriptFile(directory, filenamePrefix, terminal, "js")
+    runGnuplot(directory, filenamePrefix)
+    htmlWrap(directory, filenamePrefix)
+  }
+
+  def js2(directory: String, filenamePrefix: String): String = {
     // write the description
     assert(new File(directory).isDirectory, directory + " should be a directory")
     assert(directory.endsWith("/"), directory + " should end with a /")
@@ -285,9 +276,9 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     htmlWrap(directory, filenamePrefix)
   }
 
-  private def htmlWrap(directory: String, filenamePrefix: String, jsDir: String = "/usr/local/Cellar/gnuplot/4.6.5/share/gnuplot/4.6/js/") = {
+  private def htmlWrap(directory: String, filenamePrefix: String, jsDir: String = "/usr/local/Cellar/gnuplot/4.6.5/share/gnuplot/4.6/js") = {
     """
-      |       <html>
+      |   <html>
       |       <head>
       |           <script src="%s/canvastext.js"></script>
       |           <script src="%s/gnuplot_common.js"></script>
@@ -299,7 +290,7 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
       |               <div id="err_msg">No support for HTML 5 canvas element</div>
       |           </canvas>
       |       </body>
-      |       </html>
+      |   </html>
     """.stripMargin format(jsDir, jsDir, jsDir, filenamePrefix, filenamePrefix, filenamePrefix)
   }
 
@@ -327,11 +318,11 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
 }
 
 object GnuplotPlotter {
-  def pdf(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).writeToPdf(directory, filePrefix)
+  def pdf(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).pdf(directory, filePrefix)
 
-  def html(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).html(directory, filePrefix, false)
+  def html(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).html(directory, filePrefix)
 
   def js(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).js(directory, filePrefix)
 
-  def png(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).js(directory, filePrefix)
+  def png(chart: Chart, directory: String, filePrefix: String): Unit = new GnuplotPlotter(chart).png(directory, filePrefix)
 }

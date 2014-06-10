@@ -69,7 +69,7 @@ class JFGraphPlotter(chart: Chart) extends Plotter(chart) {
 
   def plotXYData(xydata: XYData): XYSeriesCollection = JFGraphPlotter.xyCollection(xydata)
 
-  def writeToPdf(directory: String, filenamePrefix: String) {
+  override def pdf(directory: String, filenamePrefix: String) {
     val mapper = new DefaultFontMapper
     val filename = directory + filenamePrefix + ".pdf"
     val out = new BufferedOutputStream(new FileOutputStream(filename))

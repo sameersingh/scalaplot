@@ -29,9 +29,17 @@ class ExampleTest {
     chart.showLegend = true
 
     val file = java.io.File.createTempFile("example1", "pdf")
+    file.delete()
+    file.mkdir()
     println(file.getCanonicalPath)
-    new JFGraphPlotter(chart).writeToPdf(file)
-    new GnuplotPlotter(chart).writeToPdf(file)
+    // new JFGraphPlotter(chart).writeToPdf(file)
+    val gpl = new GnuplotPlotter(chart)
+    println(gpl.string(file.getCanonicalPath + "/", "plot_string"))
+    gpl.js(file.getCanonicalPath + "/", "plot_js")
+    gpl.svg(file.getCanonicalPath + "/", "plot_svg")
+    gpl.html(file.getCanonicalPath + "/", "plot_html")
+    gpl.pdf(file.getCanonicalPath + "/", "plot_pdf")
+    gpl.png(file.getCanonicalPath + "/", "plot_png")
   }
 
   @Test
@@ -60,16 +68,16 @@ class ExampleTest {
     val d2l: XYData = s1 :: s2 :: List()
 
     // data without series
-    val d3: XYData = x -> (y1, y2, y3) // easiest, limited to 6
+    val d3: XYData = x ->(y1, y2, y3) // easiest, limited to 6
     val d4: XYData = x -> Ys(y1, y2, y3) // unlimited
-    val d5: XYData = x -> (Y(y1, "Y1"), Y(y2, color = Color.Blue), Y(y3, lw = 3.0)) // <=6, arbitrary customization
+    val d5: XYData = x ->(Y(y1, "Y1"), Y(y2, color = Color.Blue), Y(y3, lw = 3.0)) // <=6, arbitrary customization
     val d6: XYData = x -> Seq(Y(y1), Y(y2), Y(y3)) // unlimited, arbitrary customization
 
     // same as above, but with functions instead
-    val d3f: XYData = x -> (math.sin(_), math.cos(_))
+    val d3f: XYData = x ->(math.sin(_), math.cos(_))
     val d4f: XYData = x -> Yfs(math.sin, math.cos)
     val d5f: XYData = x -> Seq(Yf(math.sin, "sin"), Yf(math.cos, color = Color.Blue), Yf(math.tan, lw = 3.0))
-    val d6f: XYData = x -> (Yf(math.sin), Yf(math.cos), Yf(math.tan))
+    val d6f: XYData = x ->(Yf(math.sin), Yf(math.cos), Yf(math.tan))
   }
 
   @Test
@@ -96,10 +104,10 @@ class ExampleTest {
     val c3 = plot(s1 :: s2 :: List())
 
     // chart without series
-    val c4 = plot(x -> (y1, y2, y3))
+    val c4 = plot(x ->(y1, y2, y3))
     val c5 = plot(x -> Y(y1) :: x -> Y(y2) :: List())
     val c6 = plot(XY(xy1) :: XY(xy2) :: List())
-    val c7 = plot(x -> (math.sin(_), math.cos(_)))
-    val c8 = plot(x -> (y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
+    val c7 = plot(x ->(math.sin(_), math.cos(_)))
+    val c8 = plot(x ->(y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
   }
 }
