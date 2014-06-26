@@ -94,7 +94,7 @@ class ExampleTest {
     val s1: XYSeries = x -> y1
     val s2: XYSeries = x zip y2
     // data
-    val d: XYData = x -> Seq(Y(y1, "1"), Y(y2, "1"), Y(y3, "1"))
+    val d: XYData = x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3"))
 
     // chart with data
     val c1: XYChart = d
@@ -109,5 +109,31 @@ class ExampleTest {
     val c6 = plot(XY(xy1) :: XY(xy2) :: List())
     val c7 = plot(x ->(math.sin(_), math.cos(_)))
     val c8 = plot(x ->(y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
+  }
+
+  @Test
+  def testOutputImplicit(): Unit = {
+    import org.sameersingh.scalaplot.Implicits._
+    // seqs
+    val x = (1 until 5).map(_.toDouble)
+    val y1 = (1 until 5).map(j => math.pow(j, 1))
+    val y2 = (1 until 5).map(j => math.pow(j, 2))
+    val y3 = (1 until 5).map(j => math.pow(j, 3))
+    // data
+    val d: XYData = x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3"))
+    // chart with data
+    val c: XYChart = d
+
+    val file = java.io.File.createTempFile("scalaplot.test", "example")
+    file.delete()
+    file.mkdir()
+    println(file.getCanonicalPath)
+    val dir = file.getCanonicalPath + "/"
+
+    println(output(ASCII, c))
+    // println(output(SVG, c))
+    output(GUI, c)
+    output(PDF(dir, "pdf"), c)
+    output(PNG(dir, "png"), c)
   }
 }
