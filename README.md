@@ -19,12 +19,9 @@ The easiest (and recommended) way to use scalaplot is as a maven dependency. Ins
 ```xml
 <repositories>
   <repository>
-    <id>sameer-snapshots</id>
+    <id>sameer-releases</id>
     <name>Sameer repository</name>
-    <url>https://github.com/sameersingh/maven-repo/raw/master/snapshots</url>
-    <snapshots>
-      <enabled>true</enabled>
-    </snapshots>
+    <url>https://github.com/sameersingh/maven-repo/raw/master/releases</url>
   </repository>
   ...
 </repositories>
@@ -34,7 +31,7 @@ The easiest (and recommended) way to use scalaplot is as a maven dependency. Ins
   <dependency>
     <groupId>org.sameersingh.scalaplot</groupId>
     <artifactId>scalaplot</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
   </dependency>
   ...
 </dependencies>
@@ -119,7 +116,7 @@ plot(d, "Chart Title!")
 plot(d, x = Axis(label = "Age"), y = Axis(log = true))
 ```
 
-To understand the instantiations, here are the definitions and default parameters, which can be overriden for customizations:
+Here are the relevant definitions and default parameters that you can override:
 
 ```scala
 def plot(data: XYData, title: String = "",
@@ -139,7 +136,7 @@ def Axis(label: String = "",
 
 ### Data
 
-The data is the first argument of the plot function, and can be specified in many different ways, depending on the format that the data is available in. Primarily, `XYData` consists of multiple sequences of `(Double,Double)` pairs, where each sequence forms a single series (line in line plots). Here are some ways of data can be specified.
+The data is the first argument of the plot function, and can be specified in many different ways, depending on the format your data is available in. Primarily, `XYData` consists of multiple sequences of `(Double,Double)` pairs, where each sequence forms a single series (line in line plots). Here are some ways of data can be specified.
 
 If you have a single `x` sequence and multiple `y` sequences, you can use:
 
@@ -150,9 +147,9 @@ val y1 = (1 until 100).map(j => math.pow(j, 1))
 val y2 = (1 until 100).map(j => math.pow(j, 2))
 val y3 = (1 until 100).map(j => math.pow(j, 3))
 
-plot(x ->(math.sin(_), math.cos(_)))
 plot(x ->(y1, y2, y3))
-plot(x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3")))
+plot(x ->(math.sin(_), math.cos(_))) // inline definition
+plot(x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3"))) // with labels and other possible customizations
 plot(x -> Seq(Yf(math.sin, "sin"), Yf(math.cos, color = Color.Blue), Yf(math.tan, lw = 3.0))) // Yf for functions
 ```
 
@@ -179,7 +176,7 @@ def Yf(f: Double => Double,
        every: Option[Int] = None)
 ```
 
-If you have sequences of `(x,y)` pairs as your data, or if you want to use a different `x` for each series, you can use:
+If you have sequences of `(x,y)` pairs as your data, or if you want to use different `x` for each series:
 
 ```scala
 plot(List(x -> Y(y1), x -> Y(y2)))
