@@ -1,13 +1,14 @@
 scalaplot
 =========
 
-This is a library for quick and easy plotting of simple plots (such as XY line plots, scatter plots) and supports outputs using a few different engines (such as Gnuplot, JFreeGraph, and matplotlib). **Note:** The project is still very much in *alpha*. If you just need a clean way to interface Java with gnuplot, see [gnujavaplot](http://gnujavaplot.sourceforge.net/JavaPlot/About.html).
+This is a library for quick and easy plotting of simple plots (such as XY line plots, scatter plots) and supports outputs using different engines (currently Gnuplot and JFreeGraph).
+
+**Note:** The project is still in *beta*. If you just need a clean way to interface Java with gnuplot, see [gnujavaplot](http://gnujavaplot.sourceforge.net/JavaPlot/About.html).
 
 ## Requirements
 
 - maven
 - *for gnuplot*: [gnuplot 4.6](http://www.gnuplot.info/) with pdf support (on the mac+[homebrew](http://mxcl.github.com/homebrew/), `brew install pdflib-lite gnuplot`)
-- *for jfreechart*: None
 
 ## Installation
 
@@ -39,28 +40,28 @@ The easiest (and recommended) way to use scalaplot is as a maven dependency. Ins
 </dependencies>
 ```
 
-### Install from Source
-
-Download the source and make sure everything is up and running:
-
-```shell
-$ mvn install
-```
-
-Then include the dependency (as above) into your `pom.xml`.
-	
 ## Creating Charts
 
-Currently, the library supports line and point (scatter) charts. Let's start with the simplest complete example:
+Currently, the library supports line and point (scatter) charts. Let's start with a simple, complete example:
 
 ```scala
 import org.sameersingh.scalaplot.Implicits._
 
 val x = 0.0 until 2.0 * math.Pi by 0.1
-output(ASCII, plot(x ->(math.sin(_), math.cos(_))))
+output(PNG("docs/img/", "test"), plot(x ->(math.sin(_), math.cos(_))))
 ```
 
 which produces
+
+![Example scalaplot](https://github.com/sameersingh/scalaplot/raw/master/docs/img/test.png)
+
+while
+
+```scala
+output(ASCII, plot(x ->(math.sin(_), math.cos(_))))
+```
+
+produces
 
 ```
     1 BBBB------+--AAAAAA-+---------+--------+---------+---------BBB------++
@@ -86,7 +87,7 @@ which produces
       0         1         2         3        4         5         6         7
 ```
 
-### Outputs
+### Output Formats
 
 The library, of course, supports different output formats. Most of these also produce an accompanying Gnuplot source file, allowing archival and further customization if needed. The current list of formats are:
 
@@ -97,6 +98,15 @@ output(PDF(dir, name), plot(...)) // produces dir/name.gpl as the gnuplot source
 output(PNG(dir, name), plot(...)) // produces dir/name.gpl as the gnuplot source, and attempts dir/name.png
 output(GUI, plot(...)) // opens a window with the plot, which can be modified/exported/resized/etc.
 ```
+
+Note that scalaplot calls the `gnuplot` command to render the image in `dir/name.EXT`, but in case it fails, do the following:
+
+```shell
+$ cd dir/
+$ gnuplot name.gpl
+```
+
+which will create `name.EXT`, where `EXT` is one of `PDF` or `PNG`.
 
 ### Plot
 
@@ -120,9 +130,11 @@ def plot(data: XYData, title: String = "",
            legendPosY: LegendPosY.Type = LegendPosY.Center,
            showLegend: Boolean = false,
            monochrome: Boolean = false,
-           size: Option[(Double, Double)] = None
-            ): XYChart
-def Axis(label: String = "", backward: Boolean = false, log: Boolean = false, range: Option[(Double, Double)] = None): NumericAxis
+           size: Option[(Double, Double)] = None): XYChart
+def Axis(label: String = "",
+         backward: Boolean = false,
+         log: Boolean = false,
+         range: Option[(Double, Double)] = None): NumericAxis
 ```
 
 ### Data
@@ -261,14 +273,6 @@ val plotter = new GnuplotPlotter(chart)
 plotter.writeToPdf("dir/", "name")
 ```
 	
-This will attempt to render the PDF in `dir/name.pdf`, but in case it fails, do the following:
-
-```shell
-$ cd dir/
-$ gnuplot name.gpl
-$ open name.pdf
-```
-
 The output looks like
 
 ![Example gnuplot output](https://github.com/sameersingh/scalaplot/raw/master/docs/img/gnuplot.png)
