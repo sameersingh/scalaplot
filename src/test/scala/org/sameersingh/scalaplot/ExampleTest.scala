@@ -109,6 +109,7 @@ class ExampleTest {
     val c6 = plot(XY(xy1) :: XY(xy2) :: List())
     val c7 = plot(x ->(math.sin(_), math.cos(_)))
     val c8 = plot(x ->(y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
+    val c9 = plot(x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3")))
   }
 
   @Test
@@ -135,5 +136,12 @@ class ExampleTest {
     output(GUI, c)
     output(PDF(dir, "pdf"), c)
     output(PNG(dir, "png"), c)
+  }
+
+  @Test
+  def testExamples(): Unit = {
+    import org.sameersingh.scalaplot.Implicits._
+    val x = 0.0 until 2.0 * math.Pi by 0.1
+    println(output(ASCII, plot(x ->(math.sin(_), math.cos(_)))))
   }
 }
