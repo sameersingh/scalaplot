@@ -19,9 +19,9 @@ The easiest (and recommended) way to use scalaplot is as a maven dependency. Ins
 ```xml
 <repositories>
   <repository>
-    <id>sameer-releases</id>
-    <name>Sameer repository</name>
-    <url>https://github.com/sameersingh/maven-repo/raw/master/releases</url>
+    <id>dev-iesl.cs.umass.edu</id>
+    <name>IESL Nexus repostory</name>
+    <url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/releases</url>
   </repository>
   ...
 </repositories>
@@ -31,7 +31,7 @@ The easiest (and recommended) way to use scalaplot is as a maven dependency. Ins
   <dependency>
     <groupId>org.sameersingh.scalaplot</groupId>
     <artifactId>scalaplot</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
   </dependency>
   ...
 </dependencies>
