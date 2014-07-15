@@ -5,14 +5,28 @@
   <version>0.1-SNAPSHOT</version>
   <name>${project.artifactId}</name>
   <description>Library for plotting the results of experiments</description>
+  <url>http://www.sameersingh.org/scalaplot</url>
   <inceptionYear>2012</inceptionYear>
   <licenses>
     <license>
-      <name>My License</name>
-      <url>http://....</url>
-      <distribution>repo</distribution>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
+  <developers>
+    <developer>
+      <name>Sameer Singh</name>
+      <email>sameeersingh@gmail.com</email>
+      <organization>University of Washington</organization>
+      <organizationUrl>http://www.sameersingh.org</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <url>https://github.com/sameersingh/scalaplot</url>
+    <connection>scm:git:git://github.com/sameersingh/scalaplot.git</connection>
+    <developerConnection>scm:git:git@github.com:sameersingh/scalaplot.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
   <properties>
     <maven.compiler.source>1.5</maven.compiler.source>
@@ -73,16 +87,14 @@
   </dependencies>
 
   <distributionManagement>
-    <repository>
-      <id>dev-iesl.cs.umass.edu</id>
-      <name>IESL Nexus repostory</name>
-      <url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/releases</url>
-    </repository>
     <snapshotRepository>
-      <id>dev-iesl.cs.umass.edu</id>
-      <name>IESL Nexus repostory</name>
-      <url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/snapshots</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
   </distributionManagement>
 
   <build>
@@ -134,12 +146,44 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-  <scm>
-    <url>https://github.com/sameersingh/scalaplot</url>
-    <connection>scm:git:git://github.com/sameersingh/scalaplot.git</connection>
-    <developerConnection>scm:git:git@github.com:sameersingh/scalaplot.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
 </project>
