@@ -133,7 +133,7 @@ class ExampleTest {
 
     println(output(ASCII, c))
     // println(output(SVG, c))
-    output(GUI, c)
+    // output(GUI, c) // fails on X11-less nodes
     output(PDF(dir, "pdf"), c)
     output(PNG(dir, "png"), c)
   }
