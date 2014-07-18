@@ -19,21 +19,12 @@ This is a library for quick and easy plotting of simple plots (such as XY line p
 The easiest (and recommended) way to use scalaplot is as a maven dependency. Insert the following in your `pom` file:
 
 ```xml
-<repositories>
-  <repository>
-    <id>dev-iesl.cs.umass.edu</id>
-    <name>IESL Nexus repostory</name>
-    <url>https://dev-iesl.cs.umass.edu/nexus/content/repositories/releases</url>
-  </repository>
-  ...
-</repositories>
-...
 <dependencies>
   ...
   <dependency>
     <groupId>org.sameersingh.scalaplot</groupId>
     <artifactId>scalaplot</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
   </dependency>
   ...
 </dependencies>
