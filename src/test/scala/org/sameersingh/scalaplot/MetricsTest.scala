@@ -10,7 +10,7 @@ import org.sameersingh.scalaplot.metrics.{PrecRecallCurve, Stats, Histogram}
  */
 class MetricsTest {
 
-  val random = new Random()
+  val random = new Random(0)
 
   @Test
   def testSingleBin() {
