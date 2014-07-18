@@ -112,6 +112,12 @@
         </configuration>
         <executions>
           <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>doc-jar</goal>
+            </goals>
+          </execution>
+          <execution>
             <goals>
               <goal>compile</goal>
               <goal>testCompile</goal>
