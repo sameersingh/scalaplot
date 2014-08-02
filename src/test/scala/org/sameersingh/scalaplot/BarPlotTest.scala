@@ -28,12 +28,11 @@ class BarPlotTest {
     val plotter = new GnuplotPlotter(chart)
     val tmpFile = java.io.File.createTempFile("bar", "1ser")
     println(tmpFile.getCanonicalPath)
-    //plotter.pdf(tmpFile.getParent + "/", tmpFile.getName)
-    plotter.pdf("/Users/sameer/Work/debug/scalaplot/", "bar1")
+    plotter.pdf(tmpFile.getParent + "/", tmpFile.getName)
   }
 
   @Test
-  def testGnuplotTwoSmallColMem(): Unit = {
+  def testGnuplotTwoLargeColMem(): Unit = {
     val rand = new scala.util.Random(0)
     val series1 = new MemBarSeries(0 until 10, (0 until 10).map(i => (rand.nextDouble())), "Series1") {
       override def isLarge = true
@@ -44,10 +43,25 @@ class BarPlotTest {
     val data = new BarData((x:Int)=> "Label" + x, Seq(series1, series2))
     val chart = new BarChart("Chart", data)
     val plotter = new GnuplotPlotter(chart)
-    val tmpFile = java.io.File.createTempFile("bar", "2ser")
+    val tmpFile = java.io.File.createTempFile("bar", "2serLmem")
     println(tmpFile.getCanonicalPath)
-    //plotter.pdf(tmpFile.getParent + "/", tmpFile.getName)
-    plotter.pdf("/Users/sameer/Work/debug/scalaplot/", "bar2")
+    plotter.pdf(tmpFile.getParent + "/", tmpFile.getName)
   }
 
+  @Test
+  def testGnuplotTwoSmallColMem(): Unit = {
+    val rand = new scala.util.Random(0)
+    val series1 = new MemBarSeries(0 until 10, (0 until 10).map(i => (rand.nextDouble())), "Series1") {
+      override def isLarge = false
+    }
+    val series2 = new MemBarSeries(0 until 10, (0 until 10).map(i => (rand.nextDouble())), "Series2") {
+      override def isLarge = false
+    }
+    val data = new BarData((x:Int)=> "Label" + x, Seq(series1, series2))
+    val chart = new BarChart("Chart", data)
+    val plotter = new GnuplotPlotter(chart)
+    val tmpFile = java.io.File.createTempFile("bar", "2serSmem")
+    println(tmpFile.getCanonicalPath)
+    plotter.pdf(tmpFile.getParent + "/", tmpFile.getName)
+  }
 }
