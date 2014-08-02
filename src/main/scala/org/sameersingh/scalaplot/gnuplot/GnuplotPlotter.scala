@@ -94,6 +94,71 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     lines += ""
   }
 
+  def plotBarChart(chart: BarChart) {
+    lines += "# BarChart settings"
+    if (chart.y.isLog) lines += "set logscale y"
+    else lines += "set nologscale"
+    val yr1s = if (chart.y.min.isDefined) chart.y.min.get.toString else "*"
+    val yr2s = if (chart.y.max.isDefined) chart.y.max.get.toString else "*"
+    lines += "set yr [%s:%s] %sreverse" format(yr1s, yr2s, if (chart.y.isBackward) "" else "no")
+    lines += "set xlabel \"%s\"" format (chart.x.label)
+    lines += "set ylabel \"%s\"" format (chart.y.label)
+    plotBarData(chart.data)
+  }
+
+  def plotBarData(data: BarData) {
+    lines += "# BarData Plotting"
+    lines += "set style data histogram"
+    lines += "set style histogram cluster gap 1"
+    lines += "set style fill solid border -1"
+    lines += "plot \\"
+    var index = 0
+    for (series: BarSeries <- data.serieses) {
+      isFirst = (series == data.serieses.head)
+      isLast = (series == data.serieses.last)
+      plotBarSeries(series, index)
+      index += 1
+    }
+    // store the data if required
+    for (series: BarSeries <- data.serieses) {
+      isFirst = (series == data.serieses.head)
+      isLast = (series == data.serieses.last)
+      postPlotBarSeries(series, data.names)
+    }
+    lines += ""
+  }
+
+  def plotBarSeries(series: BarSeries, index: Int) {
+    series match {
+      case m: MemBarSeries => plotMemBarSeries(m, index)
+    }
+  }
+
+  def postPlotBarSeries(series: BarSeries, names: Int => String) {
+    series match {
+      case m: MemBarSeries => postPlotMemBarSeries(m, names)
+    }
+  }
+
+  def plotMemBarSeries(series: MemBarSeries, index: Int) {
+    val suffix = if (isLast) "" else ", \\"
+    val dataFilename = if (series.isLarge) filename + "-" + series.name + ".dat" else "-"
+    val using = if(index==0) "2:xtic(3)" else "2:xtic(3)"
+    lines += "'%s' using %s title \"%s\"%s" format(dataFilename, using, series.name, suffix)
+  }
+
+  def postPlotMemBarSeries(series: MemBarSeries, names: Int => String) {
+    if (series.isLarge) {
+      // write to file, then refer to it in the script
+      series.writeToFile(directory + filename + "-" + series.name + ".dat", names)
+    } else {
+      // write directly to the lines
+      lines += "# %s" format (series.name)
+      lines ++= series.toStrings(names)
+      lines += "end"
+    }
+  }
+
   def plotXYChart(chart: XYChart) {
     lines += "# XYChart settings"
     if (chart.x.isLog && chart.y.isLog) lines += "set logscale"
@@ -185,16 +250,19 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     reset
     this.directory = directory
     filename = filenamePrefix
-    plotChart(chart, defaultTerminal)
-    chart match {
-      case xyc: XYChart => plotXYChart(xyc)
-    }
-    lines += "# Wrapup"
+    plotChart(chart, terminal)
     lines += "set terminal %s" format (terminal)
     if (stdout) lines += "set output"
     else lines += "set output \"%s\"" format (filename + "." + filenameSuffix)
-    lines += "refresh"
+    chart match {
+      case xyc: XYChart => plotXYChart(xyc)
+      case bc: BarChart => plotBarChart(bc)
+    }
     lines += "unset output"
+    lines += "# Wrapup"
+    lines += "set terminal %s" format (defaultTerminal)
+    lines += "refresh"
+
     val scriptFile = directory + filenamePrefix + ".gpl"
     val writer = new PrintWriter(scriptFile)
     for (line <- lines) {
