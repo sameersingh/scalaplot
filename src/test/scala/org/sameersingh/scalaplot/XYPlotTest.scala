@@ -9,7 +9,7 @@ import java.io.PrintWriter
  * @date 10/6/12
  */
 @Test
-class PlotTest {
+class XYPlotTest {
 
   @Test
   def testGnuplotOneColOneFile(): Unit = {
