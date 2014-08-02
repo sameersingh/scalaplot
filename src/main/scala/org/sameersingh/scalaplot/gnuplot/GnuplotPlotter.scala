@@ -175,7 +175,7 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     val dataFilename = if (series.isLarge) filename + "-" + series.name + ".dat" else "-"
     val using = if (index == 0) "2:xtic(3)" else "2:xtic(3)"
     val fill = getFillStyle(series)
-    lines += "'%s' using %s title \"%s\"%s%s" format(dataFilename, using, series.name, fill, suffix)
+    lines += "'%s' using %s title \"%s\" %s%s" format(dataFilename, using, series.name, fill, suffix)
   }
 
   def postPlotMemBarSeries(series: MemBarSeries, names: Int => String) {
