@@ -2,6 +2,7 @@ package org.sameersingh.scalaplot
 
 import scala.collection.mutable.ArrayBuffer
 import java.io.PrintWriter
+import Style._
 
 /**
  * @author sameer
@@ -20,6 +21,15 @@ abstract class BarSeries {
   def name: String
 
   def points: Seq[(Int, Double)]
+
+  var color: Option[Color.Type] = None
+  // fill style
+  var fillStyle: Option[FillStyle.Type] = None
+  var density: Option[Double] = None
+  var pattern: Option[Int] = None
+  // border config
+  var border: Option[Boolean] = None
+  var borderLineType: Option[LineType.Type] = None
 }
 
 class MemBarSeries(val xs: Seq[Int], val ys: Seq[Double], val name: String = "Label") extends BarSeries {

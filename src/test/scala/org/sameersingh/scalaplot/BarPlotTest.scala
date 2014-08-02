@@ -37,9 +37,14 @@ class BarPlotTest {
     val series1 = new MemBarSeries(0 until 10, (0 until 10).map(i => (rand.nextDouble())), "Series1") {
       override def isLarge = true
     }
+    series1.color = Some(Style.Color.Purple)
+    series1.fillStyle = Some(Style.FillStyle.Pattern)
+    series1.pattern = Some(2)
     val series2 = new MemBarSeries(0 until 10, (0 until 10).map(i => (rand.nextDouble())), "Series2") {
       override def isLarge = true
     }
+    series2.fillStyle = Some(Style.FillStyle.Solid)
+    series2.density = Some(0.2)
     val data = new BarData((x:Int)=> "Label" + x, Seq(series1, series2))
     val chart = new BarChart("Chart", data)
     val plotter = new GnuplotPlotter(chart)

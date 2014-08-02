@@ -3,6 +3,7 @@ package org.sameersingh.scalaplot.gnuplot
 import org.sameersingh.scalaplot._
 import collection.mutable.ArrayBuffer
 import java.io.{InputStreamReader, BufferedReader, File, PrintWriter}
+import Style._
 
 /**
  * @author sameer
@@ -82,6 +83,35 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
     sb.toString
   }
 
+  protected def getFillStyle(s: BarSeries): String =
+    getFillStyle(s.color, s.border, s.borderLineType, s.fillStyle, s.density, s.pattern)
+
+  protected def getFillStyle(col: Option[Color.Type],
+                             border: Option[Boolean],
+                             borderLineType: Option[LineType.Type],
+                             fillStyle: Option[FillStyle.Type],
+                             density: Option[Double],
+                             pattern: Option[Int]): String = {
+    val sb = new StringBuffer()
+    sb append "with histogram"
+    if (col.isDefined)
+      sb.append(" linecolor rgbcolor \"%s\"" format (getColorname(col.get)))
+    if (border.isDefined || fillStyle.isDefined) {
+      sb.append(" fill ")
+      fillStyle.foreach({
+        case FillStyle.Empty => sb.append("empty ")
+        case FillStyle.Solid => sb.append("solid "); density.foreach(d => sb.append(d + " "))
+        case FillStyle.Pattern => sb.append("pattern "); pattern.foreach(i => sb.append(i + " "))
+      })
+      border.foreach({
+        case false => sb.append("noborder ")
+        // TODO line type
+        case true => sb.append("border ")
+      })
+    }
+    sb.toString
+  }
+
   def plotChart(chart: Chart, defaultTerminal: String = "dumb") {
     lines += "# Chart settings"
     chart.title.foreach(t => lines += "set title \"%s\"" format (t))
@@ -143,8 +173,9 @@ class GnuplotPlotter(chart: Chart) extends Plotter(chart) {
   def plotMemBarSeries(series: MemBarSeries, index: Int) {
     val suffix = if (isLast) "" else ", \\"
     val dataFilename = if (series.isLarge) filename + "-" + series.name + ".dat" else "-"
-    val using = if(index==0) "2:xtic(3)" else "2:xtic(3)"
-    lines += "'%s' using %s title \"%s\"%s" format(dataFilename, using, series.name, suffix)
+    val using = if (index == 0) "2:xtic(3)" else "2:xtic(3)"
+    val fill = getFillStyle(series)
+    lines += "'%s' using %s title \"%s\"%s%s" format(dataFilename, using, series.name, fill, suffix)
   }
 
   def postPlotMemBarSeries(series: MemBarSeries, names: Int => String) {

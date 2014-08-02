@@ -1,6 +1,6 @@
 package org.sameersingh.scalaplot
 
-import collection.mutable.ArrayBuffer
+import Style._
 import java.io.PrintWriter
 
 /**
@@ -51,21 +51,6 @@ class MemXYSeries(val xs: Seq[Double], val ys: Seq[Double], val name: String = "
 object XYPlotStyle extends Enumeration {
   type Type = Value
   val Lines, Points, LinesPoints, Dots, Impulses = Value
-}
-
-object LineType extends Enumeration {
-  type Type = Value
-  val Solid = Value
-}
-
-object PointType extends Enumeration {
-  type Type = Value
-  val Dot, +, X, *, emptyBox, fullBox, emptyO, fullO, emptyTri, fullTri = Value
-}
-
-object Color extends Enumeration {
-  type Type = Value
-  val Black, Grey, Red, Green, Blue, Magenta, Cyan, Maroon, Mustard, RoyalBlue, Gold, DarkGreen, Purple, SteelBlue, Yellow = Value
 }
 
 trait XYSeriesImplicits {

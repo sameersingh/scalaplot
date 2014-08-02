@@ -3,6 +3,7 @@ package org.sameersingh.scalaplot
 import gnuplot.GnuplotPlotter
 import jfreegraph.JFGraphPlotter
 import org.junit._
+import Style._
 
 /**
  * Examples that demonstrate how to use the library. Not really tests.
@@ -39,7 +40,7 @@ class ExampleTest {
     gpl.svg(file.getCanonicalPath + "/", "plot_svg")
     gpl.html(file.getCanonicalPath + "/", "plot_html")
     gpl.pdf(file.getCanonicalPath + "/", "plot_pdf")
-    gpl.png(file.getCanonicalPath + "/", "plot_png")
+    //gpl.png(file.getCanonicalPath + "/", "plot_png")
   }
 
   @Test
@@ -135,7 +136,7 @@ class ExampleTest {
     // println(output(SVG, c))
     // output(GUI, c) // fails on X11-less nodes
     output(PDF(dir, "pdf"), c)
-    output(PNG(dir, "png"), c)
+    //output(PNG(dir, "png"), c)
   }
 
   @Test
