@@ -103,11 +103,17 @@ trait BarSeriesImplicits {
 object BarSeriesImplicits extends BarSeriesImplicits
 
 trait BarDataImplicits extends BarSeriesImplicits {
+  def data(names: Int => Double, ss: Iterable[BarSeries]): BarData = new BarData(names, ss)
+
   implicit def seriesSeqToBarData(ss: Iterable[BarSeries]): BarData = new BarData(ss = ss.toSeq)
 
   implicit def barSeriesSeqToBarData(ss: Iterable[Bar]): BarData = new BarData(ss = ss.map(b => series(b)).toSeq)
 
   implicit def seriesToBarData(s: BarSeries): BarData = seriesSeqToBarData(Seq(s))
+
+  implicit def barSeriesSeqToSeqBarSeries(ss: Iterable[Bar]): Iterable[BarSeries] = ss.map(b => series(b)).toSeq
+
+  implicit def seriesToSeqBarSeries(s: BarSeries): Iterable[BarSeries] = Seq(series(s))
 
   // seq of double
   implicit def seqYToData(y: Seq[Double]): BarData = seqToSeries(y)
@@ -121,6 +127,24 @@ trait BarDataImplicits extends BarSeriesImplicits {
   implicit def seqY5ToData(ys: Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4), barToSeries(ys._5)))
 
   implicit def seqY6ToData(ys: Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4), barToSeries(ys._5), barToSeries(ys._6)))
+
+  // names => seq of double
+  implicit def namedSeqYToData(ny: Product2[Int => Double, Seq[Double]]): BarData = seqToSeries(y)
+
+  implicit def namedSeqY2ToData(nys: Product2[Int => Double, Product2[Seq[Double], Seq[Double]]]): BarData =
+    data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2)))
+
+  implicit def namedSeqY3ToData(nys: Product2[Int => Double, Product3[Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+    data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3)))
+
+  implicit def namedSeqY4ToData(nys: Product2[Int => Double, Product4[Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+    data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3), barToSeries(nys._2._4)))
+
+  implicit def namedSeqY5ToData(nys: Product2[Int => Double, Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+    data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3), barToSeries(nys._2._4), barToSeries(nys._2._5)))
+
+  implicit def namedSeqY6ToData(nys: Product2[Int => Double, Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+    data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3), barToSeries(nys._2._4), barToSeries(nys._2._5), barToSeries(nys._2._6)))
 
   // seq of Bars
   implicit def barToData(y: Bar): BarData = series(y)
