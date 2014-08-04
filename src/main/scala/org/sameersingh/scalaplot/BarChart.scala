@@ -71,105 +71,36 @@ class BarChart(chartTitle: Option[String], val data: BarData,
 
 trait BarSeriesImplicits {
 
-  trait YPoints {
-    def xsToYs(xs: Seq[Double]): Seq[Double]
-  }
-
-  //  implicit def seqToYpoints(ys: Seq[Double]): YPoints = new YPoints {
-  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = ys
-  //  }
-  //
-  //  implicit def funcToYpoints(f: Double => Double): YPoints = new YPoints {
-  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(f)
-  //  }
-
-  //  implicit def paraFuncToYpoints(f: (Double) => Double): YPoints = new YPoints {
-  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(x => f(x))
-  //  }
   implicit def anyToOptionAny[A](a: A): Option[A] = Some(a)
 
-  abstract class Y(val label: String = "Label",
-                   val style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
-                   val color: Option[Color.Type] = None,
-                   val ps: Option[Double] = None,
-                   val pt: Option[PointType.Type] = None,
-                   val lw: Option[Double] = None,
-                   val lt: Option[LineType.Type] = None,
-                   val every: Option[Int] = None) extends YPoints
+  case class Bar(yp: Seq[Double],
+                 label: String = "Label",
+                 color: Option[Color.Type] = None,
+                 fillStyle: Option[FillStyle.Type] = None,
+                 density: Option[Double] = None,
+                 pattern: Option[Int] = None,
+                 border: Option[Boolean] = None,
+                 borderLineType: Option[LineType.Type] = None)
 
-  object Y {
-    def apply(yp: Seq[Double],
-              label: String = "Label",
-              style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
-              color: Option[Color.Type] = None,
-              ps: Option[Double] = None,
-              pt: Option[PointType.Type] = None,
-              lw: Option[Double] = None,
-              lt: Option[LineType.Type] = None,
-              every: Option[Int] = None): Y = new Y(label, style, color, ps, pt, lw, lt, every) {
-      override def xsToYs(xs: Seq[Double]): Seq[Double] = yp
-    }
-  }
-
-  object Yf {
-    def apply(f: Double => Double,
-              label: String = "Label",
-              style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
-              color: Option[Color.Type] = None,
-              ps: Option[Double] = None,
-              pt: Option[PointType.Type] = None,
-              lw: Option[Double] = None,
-              lt: Option[LineType.Type] = None,
-              every: Option[Int] = None): Y = new Y(label, style, color, ps, pt, lw, lt, every) {
-      override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(f)
-    }
-  }
-
-  object XY {
-    def apply(points: Seq[(Double, Double)],
-              label: String = "Label",
-              style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
-              color: Option[Color.Type] = None,
-              ps: Option[Double] = None,
-              pt: Option[PointType.Type] = None,
-              lw: Option[Double] = None,
-              lt: Option[LineType.Type] = None,
-              every: Option[Int] = None): XYSeries = {
-      val s = new MemXYSeries(points, label)
-      s.color = color
-      s.plotStyle = style
-      s.pointSize = ps
-      s.pointType = pt
-      s.lineWidth = lw
-      s.lineType = lt
-      s.every = every
-      s
-    }
-  }
-
-  def series(xs: Seq[Double], y: Y): XYSeries = {
-    val s = new MemXYSeries(xs, y.xsToYs(xs), y.label)
+  def series(y: Bar): BarSeries = {
+    val s = new MemBarSeries(y.yp, y.label)
     s.color = y.color
-    s.plotStyle = y.style
-    s.pointSize = y.ps
-    s.pointType = y.pt
-    s.lineWidth = y.lw
-    s.lineType = y.lt
-    s.every = y.every
+    s.fillStyle = y.fillStyle
+    s.density = y.density
+    s.pattern = y.pattern
+    s.border = y.border
+    s.borderLineType = y.borderLineType
     s
   }
 
-  implicit def pairSeqToSeries(xys: Iterable[(Double, Double)]): XYSeries = new MemXYSeries(xys.toSeq)
+  implicit def seqToSeries(ys: Iterable[Double]): BarSeries = new MemBarSeries(ys.toSeq)
 
-  implicit def seqPairToSeries(xy: Pair[Iterable[Double], Iterable[Double]]): XYSeries = new MemXYSeries(xy._1.toSeq, xy._2.toSeq)
-
-  implicit def seqFuncPairToSeries(xy: Pair[Iterable[Double], Double => Double]): XYSeries = new MemXYSeries(xy._1.toSeq, xy._1.map(xy._2).toSeq)
-
-  implicit def xyspectoSeries(xy: Pair[Seq[Double], Y]): XYSeries = series(xy._1, xy._2)
+  implicit def barToSeries(bar: Bar): BarSeries = series(bar)
 }
 
 object BarSeriesImplicits extends BarSeriesImplicits
 
+/*
 trait BarDataImplicits extends BarSeriesImplicits {
   implicit def seriesSeqToData(ss: Iterable[XYSeries]): XYData = new XYData(ss.toSeq: _*)
 
@@ -276,3 +207,4 @@ trait BarChartImplicits extends BarDataImplicits {
 }
 
 object BarChartImplicits extends BarChartImplicits
+*/
