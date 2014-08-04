@@ -93,81 +93,52 @@ trait BarSeriesImplicits {
     s
   }
 
-  implicit def seqToSeries(ys: Iterable[Double]): BarSeries = new MemBarSeries(ys.toSeq)
+  implicit def seqToBar(ys: Seq[Double]): Bar = Bar(ys.toSeq)
+
+  implicit def seqToSeries(ys: Seq[Double]): BarSeries = new MemBarSeries(ys.toSeq)
 
   implicit def barToSeries(bar: Bar): BarSeries = series(bar)
 }
 
 object BarSeriesImplicits extends BarSeriesImplicits
 
-/*
 trait BarDataImplicits extends BarSeriesImplicits {
-  implicit def seriesSeqToData(ss: Iterable[XYSeries]): XYData = new XYData(ss.toSeq: _*)
+  implicit def seriesSeqToBarData(ss: Iterable[BarSeries]): BarData = new BarData(ss = ss.toSeq)
 
-  implicit def seriesToData(s: XYSeries): XYData = new XYData(s)
+  implicit def barSeriesSeqToBarData(ss: Iterable[Bar]): BarData = new BarData(ss = ss.map(b => series(b)).toSeq)
 
-  // implicit def seriesStarToData(ss: XYSeries*): XYData = new XYData(ss: _*)
-
-  // implicit def data(xys: Pair[Seq[Double], Y]): XYData = new XYData(series(xys._1, xys._2))
-
-  def Ys(ys: Iterable[Seq[Double]]): Seq[Y] = ys.map(y => Y(y)).toSeq
-
-  def Ys(ys: Seq[Double]*): Seq[Y] = ys.map(y => Y(y)).toSeq
+  implicit def seriesToBarData(s: BarSeries): BarData = seriesSeqToBarData(Seq(s))
 
   // seq of double
-  implicit def xSeqYToData(xy: Pair[Seq[Double], Seq[Double]]): XYData = xy._1 -> Ys(xy._2)
+  implicit def seqYToData(y: Seq[Double]): BarData = seqToSeries(y)
 
-  implicit def xSeqY2ToData(xy: Pair[Seq[Double], Product2[Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2)
+  implicit def seqY2ToData(ys: Product2[Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2)))
 
-  implicit def xSeqY3ToData(xy: Pair[Seq[Double], Product3[Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3)
+  implicit def seqY3ToData(ys: Product3[Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3)))
 
-  implicit def xSeqY4ToData(xy: Pair[Seq[Double], Product4[Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3, xy._2._4)
+  implicit def seqY4ToData(ys: Product4[Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4)))
 
-  implicit def xSeqY5ToData(xy: Pair[Seq[Double], Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5)
+  implicit def seqY5ToData(ys: Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4), barToSeries(ys._5)))
 
-  implicit def xSeqY6ToData(xy: Pair[Seq[Double], Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): XYData = xy._1 -> Ys(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5, xy._2._6)
+  implicit def seqY6ToData(ys: Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4), barToSeries(ys._5), barToSeries(ys._6)))
 
-  // seq of funcs
-  implicit def xFYToData(xy: Pair[Seq[Double], Double => Double]): XYData = xy._1 -> Yfs(xy._2)
+  // seq of Bars
+  implicit def barToData(y: Bar): BarData = series(y)
 
-  implicit def xFY2ToData(xy: Pair[Seq[Double], Product2[Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2)
+  implicit def bar2ToData(ys: Product2[Bar, Bar]): BarData = Seq(ys._1, ys._2)
 
-  implicit def xFY3ToData(xy: Pair[Seq[Double], Product3[Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3)
+  implicit def bar3ToData(ys: Product3[Bar, Bar, Bar]): BarData = Seq(ys._1, ys._2, ys._3)
 
-  implicit def xFY4ToData(xy: Pair[Seq[Double], Product4[Double => Double, Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3, xy._2._4)
+  implicit def bar4ToData(ys: Product4[Bar, Bar, Bar, Bar]): BarData = Seq(ys._1, ys._2, ys._3, ys._4)
 
-  implicit def xFY5ToData(xy: Pair[Seq[Double], Product5[Double => Double, Double => Double, Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5)
+  implicit def bar5ToData(ys: Product5[Bar, Bar, Bar, Bar, Bar]): BarData = Seq(ys._1, ys._2, ys._3, ys._4, ys._5)
 
-  implicit def xFY6ToData(xy: Pair[Seq[Double], Product6[Double => Double, Double => Double, Double => Double, Double => Double, Double => Double, Double => Double]]): XYData = xy._1 -> Yfs(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5, xy._2._6)
-
-  // seq of Ys
-  implicit def xYToData(xy: Pair[Seq[Double], Y]): XYData = xy._1 -> Seq(xy._2)
-
-  implicit def xY2ToData(xy: Pair[Seq[Double], Product2[Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2)
-
-  implicit def xY3ToData(xy: Pair[Seq[Double], Product3[Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3)
-
-  implicit def xY4ToData(xy: Pair[Seq[Double], Product4[Y, Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3, xy._2._4)
-
-  implicit def xY5ToData(xy: Pair[Seq[Double], Product5[Y, Y, Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5)
-
-  implicit def xY6ToData(xy: Pair[Seq[Double], Product6[Y, Y, Y, Y, Y, Y]]): XYData = xy._1 -> Seq(xy._2._1, xy._2._2, xy._2._3, xy._2._4, xy._2._5, xy._2._6)
-
-  type Func = Double => Double
-
-  def Yfs(fs: Iterable[Double => Double]): Seq[Y] = fs.map(f => Yf(f)).toSeq
-
-  def Yfs(fs: Func*): Seq[Y] = fs.map(f => Yf(f)).toSeq
-
-  implicit def xYsToData(xys: Pair[Seq[Double], Iterable[Y]]): XYData = new XYData(xys._2.map(y => series(xys._1, y)).toSeq: _*)
-
-  implicit def xYSeqToData(xys: Iterable[Pair[Seq[Double], Y]]): XYData = new XYData(xys.map(xy => series(xy._1, xy._2)).toSeq: _*)
-
-  implicit def data(xs: Seq[Double], ys: Y*): XYData = new XYData(ys.map(y => series(xs, y)).toSeq: _*)
+  implicit def bar6ToData(ys: Product6[Bar, Bar, Bar, Bar, Bar, Bar]): BarData = Seq(ys._1, ys._2, ys._3, ys._4, ys._5, ys._6)
 }
 
 object BarDataImplicits extends BarDataImplicits
 
+/*
 trait BarChartImplicits extends BarDataImplicits {
   implicit def dataToChart(d: XYData): XYChart = new XYChart(d)
 
