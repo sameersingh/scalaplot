@@ -53,6 +53,8 @@ class MemBarSeries(val ys: Seq[Double], val name: String = "Label") extends BarS
 
 class BarData(val names: (Int) => String = _.toString,
               ss: Seq[BarSeries]) {
+  def this(series: BarSeries*) = this(_.toString, series)
+
   val _serieses = new ArrayBuffer[BarSeries]()
   _serieses ++= ss
 
@@ -125,6 +127,8 @@ trait BarDataImplicits extends BarSeriesImplicits {
   implicit def seqY5ToData(ys: Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4), barToSeries(ys._5)))
 
   implicit def seqY6ToData(ys: Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4), barToSeries(ys._5), barToSeries(ys._6)))
+
+  implicit def seqYsToData(ys: Seq[Seq[Double]]): BarData = ys.map(y => series(y))
 
   // names => seq of double
   implicit def namedSeqYToData(ny: Product2[Int => String, Seq[Double]]): BarData = data(ny._1, Seq(ny._2))
