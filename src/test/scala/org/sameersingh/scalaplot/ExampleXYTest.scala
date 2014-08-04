@@ -10,7 +10,7 @@ import Style._
  * @author sameer
  */
 @Test
-class ExampleTest {
+class ExampleXYTest {
 
   @Test
   def testExplicit(): Unit = {
