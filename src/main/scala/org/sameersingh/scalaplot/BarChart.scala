@@ -71,8 +71,6 @@ class BarChart(chartTitle: Option[String], val data: BarData,
 
 trait BarSeriesImplicits {
 
-  implicit def anyToOptionAny[A](a: A): Option[A] = Some(a)
-
   case class Bar(yp: Seq[Double],
                  label: String = "Label",
                  color: Option[Color.Type] = None,
@@ -103,7 +101,7 @@ trait BarSeriesImplicits {
 object BarSeriesImplicits extends BarSeriesImplicits
 
 trait BarDataImplicits extends BarSeriesImplicits {
-  def data(names: Int => Double, ss: Iterable[BarSeries]): BarData = new BarData(names, ss)
+  def data(names: Int => String, ss: Iterable[BarSeries]): BarData = new BarData(names, ss.toSeq)
 
   implicit def seriesSeqToBarData(ss: Iterable[BarSeries]): BarData = new BarData(ss = ss.toSeq)
 
@@ -113,7 +111,7 @@ trait BarDataImplicits extends BarSeriesImplicits {
 
   implicit def barSeriesSeqToSeqBarSeries(ss: Iterable[Bar]): Iterable[BarSeries] = ss.map(b => series(b)).toSeq
 
-  implicit def seriesToSeqBarSeries(s: BarSeries): Iterable[BarSeries] = Seq(series(s))
+  implicit def seriesToSeqBarSeries(s: BarSeries): Iterable[BarSeries] = Seq(s)
 
   // seq of double
   implicit def seqYToData(y: Seq[Double]): BarData = seqToSeries(y)
@@ -129,21 +127,21 @@ trait BarDataImplicits extends BarSeriesImplicits {
   implicit def seqY6ToData(ys: Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]): BarData = seriesSeqToBarData(Seq(barToSeries(ys._1), barToSeries(ys._2), barToSeries(ys._3), barToSeries(ys._4), barToSeries(ys._5), barToSeries(ys._6)))
 
   // names => seq of double
-  implicit def namedSeqYToData(ny: Product2[Int => Double, Seq[Double]]): BarData = seqToSeries(y)
+  implicit def namedSeqYToData(ny: Product2[Int => String, Seq[Double]]): BarData = data(ny._1, Seq(ny._2))
 
-  implicit def namedSeqY2ToData(nys: Product2[Int => Double, Product2[Seq[Double], Seq[Double]]]): BarData =
+  implicit def namedSeqY2ToData(nys: Product2[Int => String, Product2[Seq[Double], Seq[Double]]]): BarData =
     data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2)))
 
-  implicit def namedSeqY3ToData(nys: Product2[Int => Double, Product3[Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+  implicit def namedSeqY3ToData(nys: Product2[Int => String, Product3[Seq[Double], Seq[Double], Seq[Double]]]): BarData =
     data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3)))
 
-  implicit def namedSeqY4ToData(nys: Product2[Int => Double, Product4[Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+  implicit def namedSeqY4ToData(nys: Product2[Int => String, Product4[Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
     data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3), barToSeries(nys._2._4)))
 
-  implicit def namedSeqY5ToData(nys: Product2[Int => Double, Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+  implicit def namedSeqY5ToData(nys: Product2[Int => String, Product5[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
     data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3), barToSeries(nys._2._4), barToSeries(nys._2._5)))
 
-  implicit def namedSeqY6ToData(nys: Product2[Int => Double, Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
+  implicit def namedSeqY6ToData(nys: Product2[Int => String, Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
     data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3), barToSeries(nys._2._4), barToSeries(nys._2._5), barToSeries(nys._2._6)))
 
   // seq of Bars
@@ -162,35 +160,24 @@ trait BarDataImplicits extends BarSeriesImplicits {
 
 object BarDataImplicits extends BarDataImplicits
 
-/*
 trait BarChartImplicits extends BarDataImplicits {
-  implicit def dataToChart(d: XYData): XYChart = new XYChart(d)
+  implicit def dataToChart(d: BarData): BarChart = new BarChart(d)
 
-  implicit def stringToOptionString(string: String): Option[String] = if (string.isEmpty) None else Some(string)
-
-  def Axis(label: String = "", backward: Boolean = false, log: Boolean = false,
-           range: Option[(Double, Double)] = None): NumericAxis = {
-    val a = new NumericAxis
-    a.label = label
-    if (backward) a.backward else a.forward
-    if (log) a.log else a.linear
-    range.foreach({
-      case (min, max) => a.range_=(min -> max)
-    })
-    a
-  }
-
-  def bar(data: XYData, title: String = "",
-          x: NumericAxis = new NumericAxis,
-          y: NumericAxis = new NumericAxis,
-          pointSize: Option[Double] = None,
-          legendPosX: LegendPosX.Type = LegendPosX.Right,
-          legendPosY: LegendPosY.Type = LegendPosY.Center,
-          showLegend: Boolean = false,
-          monochrome: Boolean = false,
-          size: Option[(Double, Double)] = None
-           ): XYChart = {
-    val c = new XYChart(stringToOptionString(title), data, x, y)
+  def barChart(data: BarData, title: String = "",
+               xLabel: String = "",
+               y: NumericAxis = new NumericAxis,
+               pointSize: Option[Double] = None,
+               legendPosX: LegendPosX.Type = LegendPosX.Right,
+               legendPosY: LegendPosY.Type = LegendPosY.Center,
+               showLegend: Boolean = false,
+               monochrome: Boolean = false,
+               size: Option[(Double, Double)] = None
+                ): BarChart = {
+    val c = new BarChart(GlobalImplicits.stringToOptionString(title), data, {
+      val d = new DiscreteAxis();
+      d.label = xLabel;
+      d
+    }, y)
     c.pointSize = pointSize
     c.legendPosX = legendPosX
     c.legendPosY = legendPosY
@@ -202,4 +189,3 @@ trait BarChartImplicits extends BarDataImplicits {
 }
 
 object BarChartImplicits extends BarChartImplicits
-*/

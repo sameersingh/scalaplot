@@ -101,16 +101,16 @@ class ExampleTest {
     val c1: XYChart = d
 
     // chart with series
-    val c2 = plot(data = s1)
-    val c3 = plot(s1 :: s2 :: List())
+    val c2 = xyChart(data = s1)
+    val c3 = xyChart(s1 :: s2 :: List())
 
     // chart without series
-    val c4 = plot(x ->(y1, y2, y3))
-    val c5 = plot(x -> Y(y1) :: x -> Y(y2) :: List())
-    val c6 = plot(XY(xy1) :: XY(xy2) :: List())
-    val c7 = plot(x ->(math.sin(_), math.cos(_)))
-    val c8 = plot(x ->(y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
-    val c9 = plot(x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3")))
+    val c4 = xyChart(x ->(y1, y2, y3))
+    val c5 = xyChart(x -> Y(y1) :: x -> Y(y2) :: List())
+    val c6 = xyChart(XY(xy1) :: XY(xy2) :: List())
+    val c7 = xyChart(x ->(math.sin(_), math.cos(_)))
+    val c8 = xyChart(x ->(y1, y2, y3), x = Axis(label = "X!", log = true), y = Axis(label = "Y!"))
+    val c9 = xyChart(x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3")))
   }
 
   @Test
@@ -143,6 +143,6 @@ class ExampleTest {
   def testExamples(): Unit = {
     import org.sameersingh.scalaplot.Implicits._
     val x = 0.0 until 2.0 * math.Pi by 0.1
-    println(output(ASCII, plot(x ->(math.sin(_), math.cos(_)))))
+    println(output(ASCII, xyChart(x ->(math.sin(_), math.cos(_)))))
   }
 }

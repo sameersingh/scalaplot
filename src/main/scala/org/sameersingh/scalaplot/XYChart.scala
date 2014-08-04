@@ -50,31 +50,17 @@ class XYChart(chartTitle: Option[String], val data: XYData,
 trait XYChartImplicits extends XYDataImplicits {
   implicit def dataToChart(d: XYData): XYChart = new XYChart(d)
 
-  implicit def stringToOptionString(string: String): Option[String] = if (string.isEmpty) None else Some(string)
-
-  def Axis(label: String = "", backward: Boolean = false, log: Boolean = false,
-           range: Option[(Double, Double)] = None): NumericAxis = {
-    val a = new NumericAxis
-    a.label = label
-    if (backward) a.backward else a.forward
-    if (log) a.log else a.linear
-    range.foreach({
-      case (min, max) => a.range_=(min -> max)
-    })
-    a
-  }
-
-  def plot(data: XYData, title: String = "",
-           x: NumericAxis = new NumericAxis,
-           y: NumericAxis = new NumericAxis,
-           pointSize: Option[Double] = None,
-           legendPosX: LegendPosX.Type = LegendPosX.Right,
-           legendPosY: LegendPosY.Type = LegendPosY.Center,
-           showLegend: Boolean = false,
-           monochrome: Boolean = false,
-           size: Option[(Double, Double)] = None
-            ): XYChart = {
-    val c = new XYChart(stringToOptionString(title), data, x, y)
+  def xyChart(data: XYData, title: String = "",
+              x: NumericAxis = new NumericAxis,
+              y: NumericAxis = new NumericAxis,
+              pointSize: Option[Double] = None,
+              legendPosX: LegendPosX.Type = LegendPosX.Right,
+              legendPosY: LegendPosY.Type = LegendPosY.Center,
+              showLegend: Boolean = false,
+              monochrome: Boolean = false,
+              size: Option[(Double, Double)] = None
+               ): XYChart = {
+    val c = new XYChart(GlobalImplicits.stringToOptionString(title), data, x, y)
     c.pointSize = pointSize
     c.legendPosX = legendPosX
     c.legendPosY = legendPosY

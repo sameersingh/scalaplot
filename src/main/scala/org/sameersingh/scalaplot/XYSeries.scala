@@ -59,19 +59,6 @@ trait XYSeriesImplicits {
     def xsToYs(xs: Seq[Double]): Seq[Double]
   }
 
-  //  implicit def seqToYpoints(ys: Seq[Double]): YPoints = new YPoints {
-  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = ys
-  //  }
-  //
-  //  implicit def funcToYpoints(f: Double => Double): YPoints = new YPoints {
-  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(f)
-  //  }
-
-  //  implicit def paraFuncToYpoints(f: (Double) => Double): YPoints = new YPoints {
-  //    override def xsToYs(xs: Seq[Double]): Seq[Double] = xs.map(x => f(x))
-  //  }
-  implicit def anyToOptionAny[A](a: A): Option[A] = Some(a)
-
   abstract class Y(val label: String = "Label",
                    val style: XYPlotStyle.Type = XYPlotStyle.LinesPoints,
                    val color: Option[Color.Type] = None,
