@@ -95,7 +95,7 @@ class PrecRecallCurve(data: Seq[(Double, Boolean)]) {
     c
   }
 
-  def prChart(title: String): XYChart = createChart(d => (d.precision, d.recall), title, "Precision", "Recall")
+  def prChart(title: String): XYChart = createChart(d => (d.recall, d.precision), title, "Recall", "Precision")
 
   def rocChart(title: String): XYChart = createChart(d => (d.sensitivity, 1.0 - d.specifity), title, "Sensitivity", "1-Specificity")
 
