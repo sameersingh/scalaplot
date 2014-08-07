@@ -52,7 +52,7 @@ class MemBarSeries(val ys: Seq[Double], val name: String = "Label") extends BarS
 
 
 class BarData(val names: (Int) => String = _.toString,
-              ss: Seq[BarSeries]) {
+              ss: Seq[BarSeries]) extends Data {
   def this(series: BarSeries*) = this(_.toString, series)
 
   val _serieses = new ArrayBuffer[BarSeries]()

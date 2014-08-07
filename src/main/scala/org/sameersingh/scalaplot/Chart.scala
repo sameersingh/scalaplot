@@ -6,6 +6,8 @@ import collection.mutable.{ArrayBuffer, Buffer}
  * @author sameer
  * @date 10/9/12
  */
+trait Data
+
 abstract class Chart {
   def title: Option[String] = None
 

@@ -6,7 +6,7 @@ import collection.mutable.ArrayBuffer
  * @author sameer
  * @date 10/9/12
  */
-class XYData(ss: XYSeries*) {
+class XYData(ss: XYSeries*) extends Data {
   //def this() = this(ss)
 
   val _serieses = new ArrayBuffer[XYSeries]()
