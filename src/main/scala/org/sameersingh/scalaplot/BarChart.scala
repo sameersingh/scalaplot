@@ -148,6 +148,8 @@ trait BarDataImplicits extends BarSeriesImplicits {
   implicit def namedSeqY6ToData(nys: Product2[Int => String, Product6[Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double], Seq[Double]]]): BarData =
     data(nys._1, Seq(barToSeries(nys._2._1), barToSeries(nys._2._2), barToSeries(nys._2._3), barToSeries(nys._2._4), barToSeries(nys._2._5), barToSeries(nys._2._6)))
 
+  implicit def namedSeqYsToData(nys: Product2[Int => String, Seq[Seq[Double]]]): BarData = data(nys._1, nys._2.map(y => barToSeries(y)))
+
   // seq of Bars
   implicit def barToData(y: Bar): BarData = series(y)
 
@@ -160,6 +162,21 @@ trait BarDataImplicits extends BarSeriesImplicits {
   implicit def bar5ToData(ys: Product5[Bar, Bar, Bar, Bar, Bar]): BarData = Seq(ys._1, ys._2, ys._3, ys._4, ys._5)
 
   implicit def bar6ToData(ys: Product6[Bar, Bar, Bar, Bar, Bar, Bar]): BarData = Seq(ys._1, ys._2, ys._3, ys._4, ys._5, ys._6)
+
+  // names => seq of Bars
+  implicit def namedBarToData(ny: Product2[Int => String, Bar]): BarData = data(ny._1, Seq(ny._2))
+
+  implicit def namedBar2ToData(nys: Product2[Int => String, Product2[Bar, Bar]]): BarData = data(nys._1, Seq(nys._2._1, nys._2._2))
+
+  implicit def namedBar3ToData(nys: Product2[Int => String, Product3[Bar, Bar, Bar]]): BarData = data(nys._1, Seq(nys._2._1, nys._2._2, nys._2._3))
+
+  implicit def namedBar4ToData(nys: Product2[Int => String, Product4[Bar, Bar, Bar, Bar]]): BarData = data(nys._1, Seq(nys._2._1, nys._2._2, nys._2._3, nys._2._4))
+
+  implicit def namedBar5ToData(nys: Product2[Int => String, Product5[Bar, Bar, Bar, Bar, Bar]]): BarData = data(nys._1, Seq(nys._2._1, nys._2._2, nys._2._3, nys._2._4, nys._2._5))
+
+  implicit def namedBar6ToData(nys: Product2[Int => String, Product6[Bar, Bar, Bar, Bar, Bar, Bar]]): BarData = data(nys._1, Seq(nys._2._1, nys._2._2, nys._2._3, nys._2._4, nys._2._5, nys._2._6))
+
+  implicit def namedBarsToData(nys: Product2[Int => String, Seq[Bar]]): BarData = data(nys._1, nys._2.map(b => barToSeries(b)))
 }
 
 object BarDataImplicits extends BarDataImplicits

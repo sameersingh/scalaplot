@@ -50,6 +50,7 @@ class ExampleBarTest {
     import org.sameersingh.scalaplot.Implicits._
     // seqs
     val x = (1 until 100)
+    val names = x.map(x => "Lab" + x)
     val y1 = x.map(j => math.pow(j, 1))
     val y2 = x.map(j => math.pow(j, 0.75))
     val y3 = x.map(j => math.pow(j, 0.5))
@@ -63,11 +64,16 @@ class ExampleBarTest {
     val d2: BarData = Seq(s1, s2)
     val d2l: BarData = s1 :: s2 :: List()
 
-    // data without series
+    // data without series, without names
     val d3: BarData = (y1, y2, y3) // easiest, limited to 6
     val d4: BarData = Seq(y1, y2, y3) // unlimited
     val d5: BarData = (Bar(y1, "Y1"), Bar(y2, color = Color.Blue), Bar(y3, density = 0.5)) // <=6, arbitrary customization
     val d6: BarData = Seq(Bar(y1), Bar(y2), Bar(y3)) // unlimited, arbitrary customization
+    // data without series, with names
+    val d3n: BarData = names -> (y1, y2, y3) // easiest, limited to 6
+    val d4n: BarData = names -> Seq(y1, y2, y3) // unlimited
+    val d5n: BarData = names -> (Bar(y1, "Y1"), Bar(y2, color = Color.Blue), Bar(y3, density = 0.5)) // <=6, arbitrary customization
+    val d6n: BarData = names -> Seq(Bar(y1), Bar(y2), Bar(y3)) // unlimited, arbitrary customization
   }
 
   @Test
@@ -97,6 +103,7 @@ class ExampleBarTest {
     val c5 = barChart((Bar(y1) -> Bar(y2)))
     val c8 = barChart(names ->(y1, y2, y3), xLabel = "X!", y = Axis(label = "Y!"))
     val c9 = barChart(Seq(Bar(y1, "1.0"), Bar(y2, "0.75"), Bar(y3, "0.5")))
+    val c10 = barChart(names -> (Bar(y1, "1.0"), Bar(y2, "0.75"), Bar(y3, "0.5")))
   }
 
   @Test
