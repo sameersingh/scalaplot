@@ -24,10 +24,16 @@ The easiest (and recommended) way to use scalaplot is as a maven dependency. Ins
   <dependency>
     <groupId>org.sameersingh.scalaplot</groupId>
     <artifactId>scalaplot</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
   </dependency>
   ...
 </dependencies>
+```
+### SBT dependency
+Or to use scalaplot with SBT, add the following dependency to your `build.sbt` file:
+
+```
+libraryDependencies += "org.sameersingh.scalaplot" % "scalaplot" % "0.0.4"
 ```
 
 ## Creating Charts
