@@ -55,22 +55,22 @@ class PrecRecallCurve(data: Seq[(Double, Boolean)]) {
 
   lazy val curve: Seq[PRPoint] = {
     val points = new ArrayBuffer[PRPoint]
-    var tp = data.count(_._2)
-    var fp = data.count(!_._2)
-    var tn = 0
-    var fn = 0
+    var tp = 0
+    var fp = 0
+    var tn = data.count(!_._2)
+    var fn = data.count(_._2)
 
-    points += PRPoint(0.0, tp, tn, fp, fn)
+    points += PRPoint(data.maxBy(_._1)._1, tp, tn, fp, fn)
     for (d <- data.sortBy(_._1)) {
-      // i am turning d from positive to negative
-      if (d._2) {
-        // mistake: it was tp, now fn
-        tp -= 1
-        fn += 1
+      // i am turning d from negative to positive
+      if (!d._2) {
+        // mistake: it was tn, now fp
+        tn -= 1
+        fp += 1
       } else {
-        // not a mistake: it was fp, now tn
-        fp -= 1
-        tn += 1
+        // not a mistake: it was fn, now tp
+        fn -= 1
+        tp += 1
       }
       points += PRPoint(d._1, tp, tn, fp, fn)
     }
