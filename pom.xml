@@ -29,10 +29,10 @@
   </scm>
 
   <properties>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <maven.compiler.target>1.5</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <encoding>UTF-8</encoding>
-    <scala.version>2.10.1</scala.version>
+    <scala.version>2.11.4</scala.version>
   </properties>
 
   <repositories>
@@ -104,10 +104,10 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.6</version>
         <configuration>
-          <recompileMode>incremental</recompileMode>
-          <useZincServer>true</useZincServer>
+          <!--recompileMode>incremental</recompileMode>
+          <useZincServer>true</useZincServer-->
           <scalaVersion>${scala.version}</scalaVersion>
         </configuration>
         <executions>
@@ -124,7 +124,7 @@
             </goals>
             <configuration>
               <args>
-                <arg>-make:transitive</arg>
+                <!--arg>-make:transitive</arg-->
                 <arg>-dependencyfile</arg>
                 <arg>${project.build.directory}/.scala_dependencies</arg>
               </args>
