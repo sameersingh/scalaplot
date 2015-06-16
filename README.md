@@ -83,6 +83,23 @@ produces
       0         1         2         3        4         5         6         7
 ```
 
+As another example to introduce a bit of customization:
+
+```scala
+import org.sameersingh.scalaplot.Implicits._
+
+val x = 0.0 until 10.0 by 0.01
+val rnd = new scala.util.Random(0)
+
+output(PNG("docs/img/", "scatter"), xyChart(
+  x -> Seq(Y(x, style = XYPlotStyle.Lines),
+           Y(x.map(_ + rnd.nextDouble - 0.5), style = XYPlotStyle.Dots))))
+```
+
+produces
+
+![Example scatter](https://github.com/sameersingh/scalaplot/raw/master/docs/img/scatter.png)
+
 ### Output Formats
 
 The library, of course, supports different output formats. Most of these also produce an accompanying Gnuplot source file, allowing archival and further customization if needed. The current list of formats are:

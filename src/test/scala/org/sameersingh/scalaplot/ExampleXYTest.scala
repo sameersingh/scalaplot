@@ -140,9 +140,17 @@ class ExampleXYTest {
   }
 
   @Test
-  def testExamples(): Unit = {
+  def testLineExample(): Unit = {
     import org.sameersingh.scalaplot.Implicits._
     val x = 0.0 until 2.0 * math.Pi by 0.1
     println(output(ASCII, xyChart(x ->(math.sin(_), math.cos(_)))))
+  }
+
+  @Test
+  def testScatterExample(): Unit = {
+    import org.sameersingh.scalaplot.Implicits._
+    val x = 0.0 until 10.0 by 0.01
+    val rnd = new scala.util.Random(0)
+    println(output(PNG("docs/img/", "scatter"), xyChart(x -> Seq(Y(x, style = XYPlotStyle.Lines), Y(x.map(_ + rnd.nextDouble - 0.5), style = XYPlotStyle.Dots)))))
   }
 }
