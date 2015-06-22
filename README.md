@@ -44,7 +44,7 @@ Currently, the library supports line and point (scatter) charts. Let's start wit
 import org.sameersingh.scalaplot.Implicits._
 
 val x = 0.0 until 2.0 * math.Pi by 0.1
-output(PNG("docs/img/", "test"), plot(x ->(math.sin(_), math.cos(_))))
+output(PNG("docs/img/", "test"), xyChart(x ->(math.sin(_), math.cos(_))))
 ```
 
 which produces
@@ -54,7 +54,7 @@ which produces
 while
 
 ```scala
-output(ASCII, plot(x ->(math.sin(_), math.cos(_))))
+output(ASCII, xyChart(x ->(math.sin(_), math.cos(_))))
 ```
 
 produces
@@ -105,11 +105,11 @@ produces
 The library, of course, supports different output formats. Most of these also produce an accompanying Gnuplot source file, allowing archival and further customization if needed. The current list of formats are:
 
 ```scala
-output(ASCII, plot(...)) // returns the string as above
-output(SVG, plot(...)) // returns the SVG text, which can be embedded in html or saved as a SVG file
-output(PDF(dir, name), plot(...)) // produces dir/name.gpl as the gnuplot source, and attempts dir/name.pdf
-output(PNG(dir, name), plot(...)) // produces dir/name.gpl as the gnuplot source, and attempts dir/name.png
-output(GUI, plot(...)) // opens a window with the plot, which can be modified/exported/resized/etc.
+output(ASCII, xyChart(...)) // returns the string as above
+output(SVG, xyChart(...)) // returns the SVG text, which can be embedded in html or saved as a SVG file
+output(PDF(dir, name), xyChart(...)) // produces dir/name.gpl as the gnuplot source, and attempts dir/name.pdf
+output(PNG(dir, name), xyChart(...)) // produces dir/name.gpl as the gnuplot source, and attempts dir/name.png
+output(GUI, xyChart(...)) // opens a window with the plot, which can be modified/exported/resized/etc.
 ```
 
 Note that scalaplot calls the `gnuplot` command to render the image in `dir/name.EXT`, but in case it fails, do the following:
@@ -121,29 +121,29 @@ $ gnuplot name.gpl
 
 which will create `name.EXT`, where `EXT` is one of `PDF` or `PNG`.
 
-### Plot
+### XYChart
 
-The `plot` function is the main entry point for creating charts. The first argument of plot requires a `XYData` object, that we will describe in the next section. The rest of the arguments customize the aspects of the chart that are not data-specific.
+The `xyChart` function is the main entry point for creating charts. The first argument of plot requires a `XYData` object, that we will describe in the next section. The rest of the arguments customize the aspects of the chart that are not data-specific.
 
 ```scala
 val d: XYData = ...
-plot(d)
-plot(d, "Chart Title!")
-plot(d, x = Axis(label = "Age"), y = Axis(log = true))
+xyChart(d)
+xyChart(d, "Chart Title!")
+xyChart(d, x = Axis(label = "Age"), y = Axis(log = true))
 ```
 
 Here are the relevant definitions and default parameters that you can override:
 
 ```scala
-def plot(data: XYData, title: String = "",
-           x: NumericAxis = new NumericAxis,
-           y: NumericAxis = new NumericAxis,
-           pointSize: Option[Double] = None,
-           legendPosX: LegendPosX.Type = LegendPosX.Right,
-           legendPosY: LegendPosY.Type = LegendPosY.Center,
-           showLegend: Boolean = false,
-           monochrome: Boolean = false,
-           size: Option[(Double, Double)] = None): XYChart
+def xyChart(data: XYData, title: String = "",
+            x: NumericAxis = new NumericAxis,
+            y: NumericAxis = new NumericAxis,
+            pointSize: Option[Double] = None,
+            legendPosX: LegendPosX.Type = LegendPosX.Right,
+            legendPosY: LegendPosY.Type = LegendPosY.Center,
+            showLegend: Boolean = false,
+            monochrome: Boolean = false,
+            size: Option[(Double, Double)] = None): XYChart
 def Axis(label: String = "",
          backward: Boolean = false,
          log: Boolean = false,
@@ -163,10 +163,10 @@ val y1 = (1 until 100).map(j => math.pow(j, 1))
 val y2 = (1 until 100).map(j => math.pow(j, 2))
 val y3 = (1 until 100).map(j => math.pow(j, 3))
 
-plot(x ->(y1, y2, y3))
-plot(x ->(math.sin(_), math.cos(_))) // inline definition
-plot(x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3"))) // with labels and other possible customizations
-plot(x -> Seq(Yf(math.sin, "sin"), Yf(math.cos, color = Color.Blue), Yf(math.tan, lw = 3.0))) // Yf for functions
+xyChart(x ->(y1, y2, y3))
+xyChart(x ->(math.sin(_), math.cos(_))) // inline definition
+xyChart(x -> Seq(Y(y1, "1"), Y(y2, "2"), Y(y3, "3"))) // with labels and other possible customizations
+xyChart(x -> Seq(Yf(math.sin, "sin"), Yf(math.cos, color = Color.Blue), Yf(math.tan, lw = 3.0))) // Yf for functions
 ```
 
 where each series can be fully customized using the following:
@@ -195,13 +195,13 @@ def Yf(f: Double => Double,
 If you have sequences of `(x,y)` pairs as your data, or if you want to use different `x` for each series:
 
 ```scala
-plot(List(x -> Y(y1), x -> Y(y2)))
-plot(List(x -> Y(y1, "1"), x -> Y(y2, color = Color.Blue)))
+xyChart(List(x -> Y(y1), x -> Y(y2)))
+xyChart(List(x -> Y(y1, "1"), x -> Y(y2, color = Color.Blue)))
 
 val xy1 = x zip y1
 val xy2 = x zip y2
-plot(List(XY(xy1), XY(xy2)))
-plot(List(XY(xy1, "1"), XY(xy2, "2")))
+xyChart(List(XY(xy1), XY(xy2)))
+xyChart(List(XY(xy1, "1"), XY(xy2, "2")))
 ```
 
 where the customization is similar to above:
