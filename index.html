@@ -1,78 +1,77 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>ScalaPlot by sameersingh</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>ScalaPlot</h1>
-        <p>Library to plot simple graphs using a Scala frontend.</p>
+    <section class="page-header">
+      <h1 class="project-name">ScalaPlot</h1>
+      <h2 class="project-tagline">Library to plot simple graphs using a Scala frontend.</h2>
+      <a href="https://github.com/sameersingh/scalaplot" class="btn">View on GitHub</a>
+      <a href="https://github.com/sameersingh/scalaplot/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/sameersingh/scalaplot/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <p class="view"><a href="https://github.com/sameersingh/scalaplot">View the Project on GitHub <small>sameersingh/scalaplot</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/sameersingh/scalaplot/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/sameersingh/scalaplot/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/sameersingh/scalaplot">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <p><a href="https://travis-ci.org/sameersingh/scalaplot"><img src="https://travis-ci.org/sameersingh/scalaplot.svg?branch=master" alt="Build Status"></a></p>
+    <section class="main-content">
+      <p><a href="https://travis-ci.org/sameersingh/scalaplot"><img src="https://travis-ci.org/sameersingh/scalaplot.svg?branch=master" alt="Build Status"></a></p>
 
 <h1>
-<a name="scalaplot" class="anchor" href="#scalaplot"><span class="octicon octicon-link"></span></a>ScalaPlot</h1>
+<a id="scalaplot" class="anchor" href="#scalaplot" aria-hidden="true"><span class="octicon octicon-link"></span></a>ScalaPlot</h1>
 
 <p>This is a library for quick and easy plotting of simple plots (such as XY line plots, scatter plots) and supports outputs using different engines (currently Gnuplot and JFreeGraph).</p>
 
 <p><strong>Note:</strong> The project is still in <em>beta</em>. If you just need a clean way to interface Java with gnuplot, see <a href="http://gnujavaplot.sourceforge.net/JavaPlot/About.html">gnujavaplot</a>.</p>
 
 <h2>
-<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
 
 <ul>
 <li>maven</li>
 <li>
 <em>for gnuplot</em>: <a href="http://www.gnuplot.info/">gnuplot 4.6</a> with pdf support (on the mac+<a href="http://mxcl.github.com/homebrew/">homebrew</a>, <code>brew install pdflib-lite gnuplot</code>)</li>
-</ul><h2>
-<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <h3>
-<a name="maven-dependency" class="anchor" href="#maven-dependency"><span class="octicon octicon-link"></span></a>Maven dependency</h3>
+<a id="maven-dependency" class="anchor" href="#maven-dependency" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven dependency</h3>
 
 <p>The easiest (and recommended) way to use scalaplot is as a maven dependency. Insert the following in your <code>pom</code> file:</p>
 
-<div class="highlight highlight-xml"><pre><span class="nt">&lt;dependencies&gt;</span>
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">dependencies</span>&gt;
   ...
-  <span class="nt">&lt;dependency&gt;</span>
-    <span class="nt">&lt;groupId&gt;</span>org.sameersingh.scalaplot<span class="nt">&lt;/groupId&gt;</span>
-    <span class="nt">&lt;artifactId&gt;</span>scalaplot<span class="nt">&lt;/artifactId&gt;</span>
-    <span class="nt">&lt;version&gt;</span>0.0.3<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;/dependency&gt;</span>
+  &lt;<span class="pl-ent">dependency</span>&gt;
+    &lt;<span class="pl-ent">groupId</span>&gt;org.sameersingh.scalaplot&lt;/<span class="pl-ent">groupId</span>&gt;
+    &lt;<span class="pl-ent">artifactId</span>&gt;scalaplot&lt;/<span class="pl-ent">artifactId</span>&gt;
+    &lt;<span class="pl-ent">version</span>&gt;0.0.4&lt;/<span class="pl-ent">version</span>&gt;
+  &lt;/<span class="pl-ent">dependency</span>&gt;
   ...
-<span class="nt">&lt;/dependencies&gt;</span>
-</pre></div>
+&lt;/<span class="pl-ent">dependencies</span>&gt;</pre></div>
+
+<h3>
+<a id="sbt-dependency" class="anchor" href="#sbt-dependency" aria-hidden="true"><span class="octicon octicon-link"></span></a>SBT dependency</h3>
+
+<p>Or to use scalaplot with SBT, add the following dependency to your <code>build.sbt</code> file:</p>
+
+<pre><code>libraryDependencies += "org.sameersingh.scalaplot" % "scalaplot" % "0.0.4"
+</code></pre>
 
 <h2>
-<a name="creating-charts" class="anchor" href="#creating-charts"><span class="octicon octicon-link"></span></a>Creating Charts</h2>
+<a id="creating-charts" class="anchor" href="#creating-charts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating Charts</h2>
 
 <p>Currently, the library supports line and point (scatter) charts. Let's start with a simple, complete example:</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">import</span> <span class="nn">org.sameersingh.scalaplot.Implicits._</span>
+<div class="highlight highlight-scala"><pre><span class="pl-k">import</span> <span class="pl-v">org.sameersingh.scalaplot.Implicits.</span><span class="pl-v">_</span>
 
-<span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="mf">0.0</span> <span class="n">until</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="nc">Pi</span> <span class="n">by</span> <span class="mf">0.1</span>
-<span class="n">output</span><span class="o">(</span><span class="nc">PNG</span><span class="o">(</span><span class="s">"docs/img/"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">),</span> <span class="n">plot</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="o">(</span><span class="k">_</span><span class="o">),</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="o">(</span><span class="k">_</span><span class="o">))))</span>
-</pre></div>
+<span class="pl-k">val</span> <span class="pl-en">x</span> <span class="pl-k">=</span> <span class="pl-c1">0.0</span> until <span class="pl-c1">2.0</span> <span class="pl-k">*</span> math.<span class="pl-en">Pi</span> by <span class="pl-c1">0.1</span>
+output(<span class="pl-en">PNG</span>(<span class="pl-s"><span class="pl-pds">"</span>docs/img/<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>test<span class="pl-pds">"</span></span>), xyChart(x <span class="pl-k">-</span><span class="pl-k">&gt;</span>(math.sin(_), math.cos(_))))</pre></div>
 
 <p>which produces</p>
 
@@ -80,8 +79,7 @@
 
 <p>while</p>
 
-<div class="highlight highlight-scala"><pre><span class="n">output</span><span class="o">(</span><span class="nc">ASCII</span><span class="o">,</span> <span class="n">plot</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="o">(</span><span class="k">_</span><span class="o">),</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="o">(</span><span class="k">_</span><span class="o">))))</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre>output(<span class="pl-en">ASCII</span>, xyChart(x <span class="pl-k">-</span><span class="pl-k">&gt;</span>(math.sin(_), math.cos(_))))</pre></div>
 
 <p>produces</p>
 
@@ -108,210 +106,212 @@
       0         1         2         3        4         5         6         7
 </code></pre>
 
+<p>As another example to introduce a bit of customization:</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">import</span> <span class="pl-v">org.sameersingh.scalaplot.Implicits.</span><span class="pl-v">_</span>
+
+<span class="pl-k">val</span> <span class="pl-en">x</span> <span class="pl-k">=</span> <span class="pl-c1">0.0</span> until <span class="pl-c1">10.0</span> by <span class="pl-c1">0.01</span>
+<span class="pl-k">val</span> <span class="pl-en">rnd</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">scala.util.Random</span>(<span class="pl-c1">0</span>)
+
+output(<span class="pl-en">PNG</span>(<span class="pl-s"><span class="pl-pds">"</span>docs/img/<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>scatter<span class="pl-pds">"</span></span>), xyChart(
+  x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Seq</span>(<span class="pl-en">Y</span>(x, style <span class="pl-k">=</span> <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">Lines</span>),
+           <span class="pl-en">Y</span>(x.map(_ <span class="pl-k">+</span> rnd.nextDouble <span class="pl-k">-</span> <span class="pl-c1">0.5</span>), style <span class="pl-k">=</span> <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">Dots</span>))))</pre></div>
+
+<p>produces</p>
+
+<p><img src="https://github.com/sameersingh/scalaplot/raw/master/docs/img/scatter.png" alt="Example scatter"></p>
+
 <h3>
-<a name="output-formats" class="anchor" href="#output-formats"><span class="octicon octicon-link"></span></a>Output Formats</h3>
+<a id="output-formats" class="anchor" href="#output-formats" aria-hidden="true"><span class="octicon octicon-link"></span></a>Output Formats</h3>
 
 <p>The library, of course, supports different output formats. Most of these also produce an accompanying Gnuplot source file, allowing archival and further customization if needed. The current list of formats are:</p>
 
-<div class="highlight highlight-scala"><pre><span class="n">output</span><span class="o">(</span><span class="nc">ASCII</span><span class="o">,</span> <span class="n">plot</span><span class="o">(...))</span> <span class="c1">// returns the string as above</span>
-<span class="n">output</span><span class="o">(</span><span class="nc">SVG</span><span class="o">,</span> <span class="n">plot</span><span class="o">(...))</span> <span class="c1">// returns the SVG text, which can be embedded in html or saved as a SVG file</span>
-<span class="n">output</span><span class="o">(</span><span class="nc">PDF</span><span class="o">(</span><span class="n">dir</span><span class="o">,</span> <span class="n">name</span><span class="o">),</span> <span class="n">plot</span><span class="o">(...))</span> <span class="c1">// produces dir/name.gpl as the gnuplot source, and attempts dir/name.pdf</span>
-<span class="n">output</span><span class="o">(</span><span class="nc">PNG</span><span class="o">(</span><span class="n">dir</span><span class="o">,</span> <span class="n">name</span><span class="o">),</span> <span class="n">plot</span><span class="o">(...))</span> <span class="c1">// produces dir/name.gpl as the gnuplot source, and attempts dir/name.png</span>
-<span class="n">output</span><span class="o">(</span><span class="nc">GUI</span><span class="o">,</span> <span class="n">plot</span><span class="o">(...))</span> <span class="c1">// opens a window with the plot, which can be modified/exported/resized/etc.</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre>output(<span class="pl-en">ASCII</span>, xyChart(...)) <span class="pl-c">// returns the string as above</span>
+output(<span class="pl-en">SVG</span>, xyChart(...)) <span class="pl-c">// returns the SVG text, which can be embedded in html or saved as a SVG file</span>
+output(<span class="pl-en">PDF</span>(dir, name), xyChart(...)) <span class="pl-c">// produces dir/name.gpl as the gnuplot source, and attempts dir/name.pdf</span>
+output(<span class="pl-en">PNG</span>(dir, name), xyChart(...)) <span class="pl-c">// produces dir/name.gpl as the gnuplot source, and attempts dir/name.png</span>
+output(<span class="pl-en">GUI</span>, xyChart(...)) <span class="pl-c">// opens a window with the plot, which can be modified/exported/resized/etc.</span></pre></div>
 
 <p>Note that scalaplot calls the <code>gnuplot</code> command to render the image in <code>dir/name.EXT</code>, but in case it fails, do the following:</p>
 
-<pre lang="shell"><code>$ cd dir/
-$ gnuplot name.gpl
-</code></pre>
+<div class="highlight highlight-shell"><pre>$ <span class="pl-c1">cd</span> dir/
+$ gnuplot name.gpl</pre></div>
 
 <p>which will create <code>name.EXT</code>, where <code>EXT</code> is one of <code>PDF</code> or <code>PNG</code>.</p>
 
 <h3>
-<a name="plot" class="anchor" href="#plot"><span class="octicon octicon-link"></span></a>Plot</h3>
+<a id="xychart" class="anchor" href="#xychart" aria-hidden="true"><span class="octicon octicon-link"></span></a>XYChart</h3>
 
-<p>The <code>plot</code> function is the main entry point for creating charts. The first argument of plot requires a <code>XYData</code> object, that we will describe in the next section. The rest of the arguments customize the aspects of the chart that are not data-specific.</p>
+<p>The <code>xyChart</code> function is the main entry point for creating charts. The first argument of plot requires a <code>XYData</code> object, that we will describe in the next section. The rest of the arguments customize the aspects of the chart that are not data-specific.</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">d</span><span class="k">:</span> <span class="kt">XYData</span> <span class="o">=</span> <span class="o">...</span>
-<span class="n">plot</span><span class="o">(</span><span class="n">d</span><span class="o">)</span>
-<span class="n">plot</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="s">"Chart Title!"</span><span class="o">)</span>
-<span class="n">plot</span><span class="o">(</span><span class="n">d</span><span class="o">,</span> <span class="n">x</span> <span class="k">=</span> <span class="nc">Axis</span><span class="o">(</span><span class="n">label</span> <span class="k">=</span> <span class="s">"Age"</span><span class="o">),</span> <span class="n">y</span> <span class="k">=</span> <span class="nc">Axis</span><span class="o">(</span><span class="n">log</span> <span class="k">=</span> <span class="kc">true</span><span class="o">))</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">d</span><span class="pl-k">:</span> <span class="pl-en">XYData</span> <span class="pl-k">=</span> ...
+xyChart(d)
+xyChart(d, <span class="pl-s"><span class="pl-pds">"</span>Chart Title!<span class="pl-pds">"</span></span>)
+xyChart(d, x <span class="pl-k">=</span> <span class="pl-en">Axis</span>(label <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Age<span class="pl-pds">"</span></span>), y <span class="pl-k">=</span> <span class="pl-en">Axis</span>(log <span class="pl-k">=</span> <span class="pl-c1">true</span>))</pre></div>
 
 <p>Here are the relevant definitions and default parameters that you can override:</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">def</span> <span class="n">plot</span><span class="o">(</span><span class="n">data</span><span class="k">:</span> <span class="kt">XYData</span><span class="o">,</span> <span class="n">title</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span><span class="o">,</span>
-           <span class="n">x</span><span class="k">:</span> <span class="kt">NumericAxis</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NumericAxis</span><span class="o">,</span>
-           <span class="n">y</span><span class="k">:</span> <span class="kt">NumericAxis</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NumericAxis</span><span class="o">,</span>
-           <span class="n">pointSize</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-           <span class="n">legendPosX</span><span class="k">:</span> <span class="kt">LegendPosX.Type</span> <span class="o">=</span> <span class="nc">LegendPosX</span><span class="o">.</span><span class="nc">Right</span><span class="o">,</span>
-           <span class="n">legendPosY</span><span class="k">:</span> <span class="kt">LegendPosY.Type</span> <span class="o">=</span> <span class="nc">LegendPosY</span><span class="o">.</span><span class="nc">Center</span><span class="o">,</span>
-           <span class="n">showLegend</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
-           <span class="n">monochrome</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
-           <span class="n">size</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[(</span><span class="kt">Double</span>, <span class="kt">Double</span><span class="o">)]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">)</span><span class="k">:</span> <span class="kt">XYChart</span>
-<span class="k">def</span> <span class="nc">Axis</span><span class="o">(</span><span class="n">label</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span><span class="o">,</span>
-         <span class="n">backward</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
-         <span class="n">log</span><span class="k">:</span> <span class="kt">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
-         <span class="n">range</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[(</span><span class="kt">Double</span>, <span class="kt">Double</span><span class="o">)]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">)</span><span class="k">:</span> <span class="kt">NumericAxis</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">def</span> <span class="pl-en">xyChart</span>(<span class="pl-v">data</span>: <span class="pl-en">XYData</span>, <span class="pl-v">title</span>: <span class="pl-k">String</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+            <span class="pl-v">x</span>: <span class="pl-en">NumericAxis</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NumericAxis,</span>
+            <span class="pl-v">y</span>: <span class="pl-en">NumericAxis</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">NumericAxis,</span>
+            <span class="pl-v">pointSize</span>: <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+            <span class="pl-v">legendPosX</span>: <span class="pl-en">LegendPosX</span>.<span class="pl-en">Type</span> <span class="pl-k">=</span> <span class="pl-en">LegendPosX</span>.<span class="pl-en">Right</span>,
+            <span class="pl-v">legendPosY</span>: <span class="pl-en">LegendPosY</span>.<span class="pl-en">Type</span> <span class="pl-k">=</span> <span class="pl-en">LegendPosY</span>.<span class="pl-en">Center</span>,
+            <span class="pl-v">showLegend</span>: <span class="pl-k">Boolean</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>,
+            <span class="pl-v">monochrome</span>: <span class="pl-k">Boolean</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>,
+            <span class="pl-v">size</span>: <span class="pl-en">Option</span>[(<span class="pl-k">Double</span>, <span class="pl-k">Double</span>)] <span class="pl-k">=</span> <span class="pl-c1">None</span>)<span class="pl-k">:</span> <span class="pl-en">XYChart</span>
+<span class="pl-k">def</span> <span class="pl-en">Axis</span>(<span class="pl-v">label</span>: <span class="pl-k">String</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+         <span class="pl-v">backward</span>: <span class="pl-k">Boolean</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>,
+         <span class="pl-v">log</span>: <span class="pl-k">Boolean</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>,
+         <span class="pl-v">range</span>: <span class="pl-en">Option</span>[(<span class="pl-k">Double</span>, <span class="pl-k">Double</span>)] <span class="pl-k">=</span> <span class="pl-c1">None</span>)<span class="pl-k">:</span> <span class="pl-en">NumericAxis</span></pre></div>
 
 <h3>
-<a name="data" class="anchor" href="#data"><span class="octicon octicon-link"></span></a>Data</h3>
+<a id="data" class="anchor" href="#data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data</h3>
 
 <p>The data is the first argument of the plot function, and can be specified in many different ways, depending on the format your data is available in. Primarily, <code>XYData</code> consists of multiple sequences of <code>(Double,Double)</code> pairs, where each sequence forms a single series (line in line plots). Here are some ways of data can be specified.</p>
 
 <p>If you have a single <code>x</code> sequence and multiple <code>y</code> sequences, you can use:</p>
 
-<div class="highlight highlight-scala"><pre><span class="c1">// data</span>
-<span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="mi">100</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">toDouble</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">y1</span> <span class="k">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="mi">100</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">j</span> <span class="k">=&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">y2</span> <span class="k">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="mi">100</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">j</span> <span class="k">=&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="mi">2</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">y3</span> <span class="k">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="mi">100</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="n">j</span> <span class="k">=&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="o">(</span><span class="n">j</span><span class="o">,</span> <span class="mi">3</span><span class="o">))</span>
+<div class="highlight highlight-scala"><pre><span class="pl-c">// data</span>
+<span class="pl-k">val</span> <span class="pl-en">x</span> <span class="pl-k">=</span> (<span class="pl-c1">1</span> until <span class="pl-c1">100</span>).map(_.toDouble)
+<span class="pl-k">val</span> <span class="pl-en">y1</span> <span class="pl-k">=</span> (<span class="pl-c1">1</span> until <span class="pl-c1">100</span>).map(j <span class="pl-k">=&gt;</span> math.pow(j, <span class="pl-c1">1</span>))
+<span class="pl-k">val</span> <span class="pl-en">y2</span> <span class="pl-k">=</span> (<span class="pl-c1">1</span> until <span class="pl-c1">100</span>).map(j <span class="pl-k">=&gt;</span> math.pow(j, <span class="pl-c1">2</span>))
+<span class="pl-k">val</span> <span class="pl-en">y3</span> <span class="pl-k">=</span> (<span class="pl-c1">1</span> until <span class="pl-c1">100</span>).map(j <span class="pl-k">=&gt;</span> math.pow(j, <span class="pl-c1">3</span>))
 
-<span class="n">plot</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;(</span><span class="n">y1</span><span class="o">,</span> <span class="n">y2</span><span class="o">,</span> <span class="n">y3</span><span class="o">))</span>
-<span class="n">plot</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="o">(</span><span class="k">_</span><span class="o">),</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="o">(</span><span class="k">_</span><span class="o">)))</span> <span class="c1">// inline definition</span>
-<span class="n">plot</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="nc">Seq</span><span class="o">(</span><span class="n">Y</span><span class="o">(</span><span class="n">y1</span><span class="o">,</span> <span class="s">"1"</span><span class="o">),</span> <span class="n">Y</span><span class="o">(</span><span class="n">y2</span><span class="o">,</span> <span class="s">"2"</span><span class="o">),</span> <span class="n">Y</span><span class="o">(</span><span class="n">y3</span><span class="o">,</span> <span class="s">"3"</span><span class="o">)))</span> <span class="c1">// with labels and other possible customizations</span>
-<span class="n">plot</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="nc">Seq</span><span class="o">(</span><span class="nc">Yf</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="o">,</span> <span class="s">"sin"</span><span class="o">),</span> <span class="nc">Yf</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="o">,</span> <span class="n">color</span> <span class="k">=</span> <span class="nc">Color</span><span class="o">.</span><span class="nc">Blue</span><span class="o">),</span> <span class="nc">Yf</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="o">,</span> <span class="n">lw</span> <span class="k">=</span> <span class="mf">3.0</span><span class="o">)))</span> <span class="c1">// Yf for functions</span>
-</pre></div>
+xyChart(x <span class="pl-k">-</span><span class="pl-k">&gt;</span>(y1, y2, y3))
+xyChart(x <span class="pl-k">-</span><span class="pl-k">&gt;</span>(math.sin(_), math.cos(_))) <span class="pl-c">// inline definition</span>
+xyChart(x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Seq</span>(<span class="pl-en">Y</span>(y1, <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>), <span class="pl-en">Y</span>(y2, <span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>), <span class="pl-en">Y</span>(y3, <span class="pl-s"><span class="pl-pds">"</span>3<span class="pl-pds">"</span></span>))) <span class="pl-c">// with labels and other possible customizations</span>
+xyChart(x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Seq</span>(<span class="pl-en">Yf</span>(math.sin, <span class="pl-s"><span class="pl-pds">"</span>sin<span class="pl-pds">"</span></span>), <span class="pl-en">Yf</span>(math.cos, color <span class="pl-k">=</span> <span class="pl-en">Color</span>.<span class="pl-en">Blue</span>), <span class="pl-en">Yf</span>(math.tan, lw <span class="pl-k">=</span> <span class="pl-c1">3.0</span>))) <span class="pl-c">// Yf for functions</span></pre></div>
 
 <p>where each series can be fully customized using the following:</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">def</span> <span class="n">Y</span><span class="o">(</span><span class="n">yp</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">Double</span><span class="o">],</span>
-      <span class="n">label</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"Label"</span><span class="o">,</span>
-      <span class="n">style</span><span class="k">:</span> <span class="kt">XYPlotStyle.Type</span> <span class="o">=</span> <span class="nc">XYPlotStyle</span><span class="o">.</span><span class="nc">LinesPoints</span><span class="o">,</span>
-      <span class="n">color</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Color.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-      <span class="n">ps</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-      <span class="n">pt</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">PointType.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-      <span class="n">lw</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-      <span class="n">lt</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">LineType.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-      <span class="n">every</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">)</span>
-<span class="k">def</span> <span class="nc">Yf</span><span class="o">(</span><span class="n">f</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=&gt;</span> <span class="nc">Double</span><span class="o">,</span>
-       <span class="n">label</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"Label"</span><span class="o">,</span>
-       <span class="n">style</span><span class="k">:</span> <span class="kt">XYPlotStyle.Type</span> <span class="o">=</span> <span class="nc">XYPlotStyle</span><span class="o">.</span><span class="nc">LinesPoints</span><span class="o">,</span>
-       <span class="n">color</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Color.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">ps</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">pt</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">PointType.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">lw</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">lt</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">LineType.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">every</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">)</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">def</span> <span class="pl-en">Y</span>(<span class="pl-v">yp</span>: <span class="pl-en">Seq</span>[<span class="pl-k">Double</span>],
+      <span class="pl-v">label</span>: <span class="pl-k">String</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Label<span class="pl-pds">"</span></span>,
+      <span class="pl-v">style</span>: <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">Type</span> <span class="pl-k">=</span> <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">LinesPoints</span>,
+      <span class="pl-v">color</span>: <span class="pl-en">Option</span>[<span class="pl-en">Color</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+      <span class="pl-v">ps</span>: <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+      <span class="pl-v">pt</span>: <span class="pl-en">Option</span>[<span class="pl-en">PointType</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+      <span class="pl-v">lw</span>: <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+      <span class="pl-v">lt</span>: <span class="pl-en">Option</span>[<span class="pl-en">LineType</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+      <span class="pl-v">every</span>: <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>)
+<span class="pl-k">def</span> <span class="pl-en">Yf</span>(<span class="pl-v">f</span>: <span class="pl-k">Double</span> <span class="pl-k">=&gt;</span> <span class="pl-k">Double</span>,
+       <span class="pl-v">label</span>: <span class="pl-k">String</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Label<span class="pl-pds">"</span></span>,
+       <span class="pl-v">style</span>: <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">Type</span> <span class="pl-k">=</span> <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">LinesPoints</span>,
+       <span class="pl-v">color</span>: <span class="pl-en">Option</span>[<span class="pl-en">Color</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">ps</span>: <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">pt</span>: <span class="pl-en">Option</span>[<span class="pl-en">PointType</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">lw</span>: <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">lt</span>: <span class="pl-en">Option</span>[<span class="pl-en">LineType</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">every</span>: <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>)</pre></div>
 
 <p>If you have sequences of <code>(x,y)</code> pairs as your data, or if you want to use different <code>x</code> for each series:</p>
 
-<div class="highlight highlight-scala"><pre><span class="n">plot</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">Y</span><span class="o">(</span><span class="n">y1</span><span class="o">),</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">Y</span><span class="o">(</span><span class="n">y2</span><span class="o">)))</span>
-<span class="n">plot</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">Y</span><span class="o">(</span><span class="n">y1</span><span class="o">,</span> <span class="s">"1"</span><span class="o">),</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">Y</span><span class="o">(</span><span class="n">y2</span><span class="o">,</span> <span class="n">color</span> <span class="k">=</span> <span class="nc">Color</span><span class="o">.</span><span class="nc">Blue</span><span class="o">)))</span>
+<div class="highlight highlight-scala"><pre>xyChart(<span class="pl-en">List</span>(x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Y</span>(y1), x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Y</span>(y2)))
+xyChart(<span class="pl-en">List</span>(x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Y</span>(y1, <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>), x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Y</span>(y2, color <span class="pl-k">=</span> <span class="pl-en">Color</span>.<span class="pl-en">Blue</span>)))
 
-<span class="k">val</span> <span class="n">xy1</span> <span class="k">=</span> <span class="n">x</span> <span class="n">zip</span> <span class="n">y1</span>
-<span class="k">val</span> <span class="n">xy2</span> <span class="k">=</span> <span class="n">x</span> <span class="n">zip</span> <span class="n">y2</span>
-<span class="n">plot</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="nc">XY</span><span class="o">(</span><span class="n">xy1</span><span class="o">),</span> <span class="nc">XY</span><span class="o">(</span><span class="n">xy2</span><span class="o">)))</span>
-<span class="n">plot</span><span class="o">(</span><span class="nc">List</span><span class="o">(</span><span class="nc">XY</span><span class="o">(</span><span class="n">xy1</span><span class="o">,</span> <span class="s">"1"</span><span class="o">),</span> <span class="nc">XY</span><span class="o">(</span><span class="n">xy2</span><span class="o">,</span> <span class="s">"2"</span><span class="o">)))</span>
-</pre></div>
+<span class="pl-k">val</span> <span class="pl-en">xy1</span> <span class="pl-k">=</span> x zip y1
+<span class="pl-k">val</span> <span class="pl-en">xy2</span> <span class="pl-k">=</span> x zip y2
+xyChart(<span class="pl-en">List</span>(<span class="pl-en">XY</span>(xy1), <span class="pl-en">XY</span>(xy2)))
+xyChart(<span class="pl-en">List</span>(<span class="pl-en">XY</span>(xy1, <span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span>), <span class="pl-en">XY</span>(xy2, <span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span>)))</pre></div>
 
 <p>where the customization is similar to above:</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">def</span> <span class="nc">XY</span><span class="o">(</span><span class="n">points</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[(</span><span class="kt">Double</span>, <span class="kt">Double</span><span class="o">)],</span>
-       <span class="n">label</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"Label"</span><span class="o">,</span>
-       <span class="n">style</span><span class="k">:</span> <span class="kt">XYPlotStyle.Type</span> <span class="o">=</span> <span class="nc">XYPlotStyle</span><span class="o">.</span><span class="nc">LinesPoints</span><span class="o">,</span>
-       <span class="n">color</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Color.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">ps</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">pt</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">PointType.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">lw</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">lt</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">LineType.Type</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
-       <span class="n">every</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">)</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">def</span> <span class="pl-en">XY</span>(<span class="pl-v">points</span>: <span class="pl-en">Seq</span>[(<span class="pl-k">Double</span>, <span class="pl-k">Double</span>)],
+       <span class="pl-v">label</span>: <span class="pl-k">String</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Label<span class="pl-pds">"</span></span>,
+       <span class="pl-v">style</span>: <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">Type</span> <span class="pl-k">=</span> <span class="pl-en">XYPlotStyle</span>.<span class="pl-en">LinesPoints</span>,
+       <span class="pl-v">color</span>: <span class="pl-en">Option</span>[<span class="pl-en">Color</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">ps</span>: <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">pt</span>: <span class="pl-en">Option</span>[<span class="pl-en">PointType</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">lw</span>: <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">lt</span>: <span class="pl-en">Option</span>[<span class="pl-en">LineType</span>.<span class="pl-en">Type</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>,
+       <span class="pl-v">every</span>: <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-c1">None</span>)</pre></div>
 
 <h3>
-<a name="other-implicits" class="anchor" href="#other-implicits"><span class="octicon octicon-link"></span></a>Other Implicits</h3>
+<a id="other-implicits" class="anchor" href="#other-implicits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other Implicits</h3>
 
 <p>Scalaplot also supports a number of other implicits to make things easier to use.</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">d</span><span class="k">:</span> <span class="kt">XYData</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-&gt;(</span><span class="n">y1</span><span class="o">,</span> <span class="n">y2</span><span class="o">,</span> <span class="n">y3</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">c</span><span class="k">:</span> <span class="kt">XYChart</span> <span class="o">=</span> <span class="n">d</span> <span class="c1">// automatic conversion from data to chart</span>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">d</span><span class="pl-k">:</span> <span class="pl-en">XYData</span> <span class="pl-k">=</span> x <span class="pl-k">-</span><span class="pl-k">&gt;</span>(y1, y2, y3)
+<span class="pl-k">val</span> <span class="pl-en">c</span><span class="pl-k">:</span> <span class="pl-en">XYChart</span> <span class="pl-k">=</span> d <span class="pl-c">// automatic conversion from data to chart</span>
 
-<span class="c1">// series</span>
-<span class="k">val</span> <span class="n">s1</span><span class="k">:</span> <span class="kt">XYSeries</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">y1</span>
-<span class="k">val</span> <span class="n">s2</span><span class="k">:</span> <span class="kt">XYSeries</span> <span class="o">=</span> <span class="n">x</span> <span class="n">zip</span> <span class="n">y2</span>
-<span class="k">val</span> <span class="n">f1</span> <span class="k">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="o">(</span><span class="k">_</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">s1f</span><span class="k">:</span> <span class="kt">XYSeries</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">f1</span>
-<span class="k">val</span> <span class="n">s2f</span><span class="k">:</span> <span class="kt">XYSeries</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="nc">Yf</span><span class="o">(</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="o">)</span>
+<span class="pl-c">// series</span>
+<span class="pl-k">val</span> <span class="pl-en">s1</span><span class="pl-k">:</span> <span class="pl-en">XYSeries</span> <span class="pl-k">=</span> x <span class="pl-k">-</span><span class="pl-k">&gt;</span> y1
+<span class="pl-k">val</span> <span class="pl-en">s2</span><span class="pl-k">:</span> <span class="pl-en">XYSeries</span> <span class="pl-k">=</span> x zip y2
+<span class="pl-k">val</span> <span class="pl-en">f1</span> <span class="pl-k">=</span> math.sin(_)
+<span class="pl-k">val</span> <span class="pl-en">s1f</span><span class="pl-k">:</span> <span class="pl-en">XYSeries</span> <span class="pl-k">=</span> x <span class="pl-k">-</span><span class="pl-k">&gt;</span> f1
+<span class="pl-k">val</span> <span class="pl-en">s2f</span><span class="pl-k">:</span> <span class="pl-en">XYSeries</span> <span class="pl-k">=</span> x <span class="pl-k">-</span><span class="pl-k">&gt;</span> <span class="pl-en">Yf</span>(math.sin)
 
-<span class="c1">// series to data</span>
-<span class="k">val</span> <span class="n">d1</span><span class="k">:</span> <span class="kt">XYData</span> <span class="o">=</span> <span class="n">s1</span>
-<span class="k">val</span> <span class="n">d2</span><span class="k">:</span> <span class="kt">XYData</span> <span class="o">=</span> <span class="nc">Seq</span><span class="o">(</span><span class="n">s1</span><span class="o">,</span> <span class="n">s2</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">d2l</span><span class="k">:</span> <span class="kt">XYData</span> <span class="o">=</span> <span class="n">s1</span> <span class="o">::</span> <span class="n">s2</span> <span class="o">::</span> <span class="nc">List</span><span class="o">()</span>
-</pre></div>
+<span class="pl-c">// series to data</span>
+<span class="pl-k">val</span> <span class="pl-en">d1</span><span class="pl-k">:</span> <span class="pl-en">XYData</span> <span class="pl-k">=</span> s1
+<span class="pl-k">val</span> <span class="pl-en">d2</span><span class="pl-k">:</span> <span class="pl-en">XYData</span> <span class="pl-k">=</span> <span class="pl-en">Seq</span>(s1, s2)
+<span class="pl-k">val</span> <span class="pl-en">d2l</span><span class="pl-k">:</span> <span class="pl-en">XYData</span> <span class="pl-k">=</span> s1 <span class="pl-k">::</span> s2 <span class="pl-k">::</span> <span class="pl-en">List</span>()</pre></div>
 
 <h2>
-<a name="explicit-data-structures" class="anchor" href="#explicit-data-structures"><span class="octicon octicon-link"></span></a>Explicit Data Structures</h2>
+<a id="explicit-data-structures" class="anchor" href="#explicit-data-structures" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explicit Data Structures</h2>
 
 <p>For even further customization of the charts, you will need to dive into the API instead of relying on the above <em>implicits</em>.</p>
 
 <h3>
-<a name="xy-line-charts" class="anchor" href="#xy-line-charts"><span class="octicon octicon-link"></span></a>XY Line Charts</h3>
+<a id="xy-line-charts" class="anchor" href="#xy-line-charts" aria-hidden="true"><span class="octicon octicon-link"></span></a>XY Line Charts</h3>
 
 <p>First step is to get your data into <code>Seq[Double]</code>.</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">until</span> <span class="mi">100</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">toDouble</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">y</span> <span class="k">=</span> <span class="n">x</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span><span class="o">)</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">x</span> <span class="pl-k">=</span> (<span class="pl-c1">1</span> until <span class="pl-c1">100</span>).map(_.toDouble)
+<span class="pl-k">val</span> <span class="pl-en">y</span> <span class="pl-k">=</span> x.map(i <span class="pl-k">=&gt;</span> i<span class="pl-k">*</span>i)</pre></div>
 
 <p>Create a dataset that represents these sequences.</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">series</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">MemXYSeries</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="s">"Square"</span><span class="o">)</span>
-<span class="k">val</span> <span class="n">data</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">XYData</span><span class="o">(</span><span class="n">series</span><span class="o">)</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">series</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">MemXYSeries</span>(x, y, <span class="pl-s"><span class="pl-pds">"</span>Square<span class="pl-pds">"</span></span>)
+<span class="pl-k">val</span> <span class="pl-en">data</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XYData</span>(series)</pre></div>
 
 <p>You can add more series too.</p>
 
-<div class="highlight highlight-scala"><pre><span class="n">data</span> <span class="o">+=</span> <span class="k">new</span> <span class="nc">MemXYSeries</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">x</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">*</span><span class="n">i</span><span class="o">*</span><span class="n">i</span><span class="o">),</span> <span class="s">"Cube"</span><span class="o">)</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre>data <span class="pl-k">+</span><span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">MemXYSeries</span>(x, x.map(i <span class="pl-k">=&gt;</span> i<span class="pl-k">*</span>i<span class="pl-k">*</span>i), <span class="pl-s"><span class="pl-pds">"</span>Cube<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>Let's create the chart.</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">chart</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">XYChart</span><span class="o">(</span><span class="s">"Powers!"</span><span class="o">,</span> <span class="n">data</span><span class="o">)</span>
-<span class="n">chart</span><span class="o">.</span><span class="n">showLegend</span> <span class="k">=</span> <span class="kc">true</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">chart</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">XYChart</span>(<span class="pl-s"><span class="pl-pds">"</span>Powers!<span class="pl-pds">"</span></span>, data)
+chart.showLegend <span class="pl-k">=</span> <span class="pl-c1">true</span></pre></div>
 
 <h2>
-<a name="rendering-charts" class="anchor" href="#rendering-charts"><span class="octicon octicon-link"></span></a>Rendering Charts</h2>
+<a id="rendering-charts" class="anchor" href="#rendering-charts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rendering Charts</h2>
 
 <p>Even though multiple backends are being supported to render the charts, gnuplot is the most actively developed and supported since it allows post plotting customizations (editing the script files), may possible output formats, and ease of use.</p>
 
 <h3>
-<a name="gnuplot" class="anchor" href="#gnuplot"><span class="octicon octicon-link"></span></a>Gnuplot</h3>
+<a id="gnuplot" class="anchor" href="#gnuplot" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gnuplot</h3>
 
 <p>Generates gnuplot scripts that will need to be run to actually generate the images.</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">plotter</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">GnuplotPlotter</span><span class="o">(</span><span class="n">chart</span><span class="o">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">writeToPdf</span><span class="o">(</span><span class="s">"dir/"</span><span class="o">,</span> <span class="s">"name"</span><span class="o">)</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">plotter</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">GnuplotPlotter</span>(chart)
+plotter.writeToPdf(<span class="pl-s"><span class="pl-pds">"</span>dir/<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>)</pre></div>
 
 <p>The output looks like</p>
 
 <p><img src="https://github.com/sameersingh/scalaplot/raw/master/docs/img/gnuplot.png" alt="Example gnuplot output"></p>
 
 <h3>
-<a name="jfreegraph" class="anchor" href="#jfreegraph"><span class="octicon octicon-link"></span></a>JFreegraph</h3>
+<a id="jfreegraph" class="anchor" href="#jfreegraph" aria-hidden="true"><span class="octicon octicon-link"></span></a>JFreegraph</h3>
 
 <p>JFreegraph can also be called similarly to produce pdf plots (use <code>JFGraphPlotter</code>).
 However, it also supports a <code>gui()</code> option for when you just want to see the graph.</p>
 
-<div class="highlight highlight-scala"><pre><span class="k">val</span> <span class="n">plotter</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">JFGraphPlotter</span><span class="o">(</span><span class="n">chart</span><span class="o">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">gui</span><span class="o">()</span>
-</pre></div>
+<div class="highlight highlight-scala"><pre><span class="pl-k">val</span> <span class="pl-en">plotter</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">JFGraphPlotter</span>(chart)
+plotter.gui()</pre></div>
 
 <p>produces</p>
 
 <p><img src="https://github.com/sameersingh/scalaplot/raw/master/docs/img/jfreegraph.png" alt="Example jfreegraph output"></p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/sameersingh">sameersingh</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/sameersingh/scalaplot">ScalaPlot</a> is maintained by <a href="https://github.com/sameersingh">sameersingh</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
+
+    </section>
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -324,3 +324,4 @@ However, it also supports a <code>gui()</code> option for when you just want to 
 
   </body>
 </html>
+
