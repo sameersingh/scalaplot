@@ -2,7 +2,7 @@ package org.sameersingh.scalaplot.jfreegraph
 
 import org.sameersingh.scalaplot._
 import javax.swing.JFrame
-import org.jfree.chart.{JFreeChart => JChart, ChartPanel, ChartFactory}
+import org.jfree.chart.{JFreeChart => JChart, ChartPanel, ChartFactory, ChartUtilities}
 import org.jfree.data.xy.{XYSeries => XYS}
 import org.jfree.data.xy.XYSeriesCollection
 import com.itextpdf.text.pdf.DefaultFontMapper
@@ -92,6 +92,11 @@ class JFGraphPlotter(chart: Chart) extends Plotter(chart) {
     }
     document.close
     out.close
+  }
+
+  override def png(directory: String, filenamePrefix: String) {
+    val filename = directory + filenamePrefix + ".png"
+    ChartUtilities.saveChartAsPNG(new java.io.File(filename), jchart, 1280, 720)
   }
 
   override def gui() { JFGraphPlotter.gui(jchart) }
